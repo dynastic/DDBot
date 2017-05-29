@@ -4,6 +4,8 @@
 
 A Discord bot developed by the Dynastic Development Team.
 
+**This project is very much a work-in-progress and contains a lot of shitty code. Contributions are appreciated!**
+
 ## Getting started
 
 These instructions will help you get a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
@@ -16,7 +18,7 @@ These instructions will help you get a copy of the project up and running on you
 
 ### Installing
 
-* Copy config/config.example.js to config/config.js
+* Copy Source/config.example.json to Source/config.json
 * Configure your DDBot instance as you see fit by modifying the values
     * Set a strong secret in the secret field!
 * Run `npm i` to install the dependencies
