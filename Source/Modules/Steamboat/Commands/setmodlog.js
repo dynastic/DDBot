@@ -4,7 +4,6 @@ const fs = require("fs-extra-promise");
 
 module.exports = new Command("setmodlog", "Sets the mod log channel for this guild", "<channel>", [],
     (client, message, response, args) => {
-        console.log("bloop");
         if(!message.mentions.channels.first()) return response.reply("", response.embedFactory.createErrorEmbed(null, message.member).setDescription("You did not specify a channel to set the mod log to."));
         var channel = message.mentions.channels.first();
         var config = require('../config');
