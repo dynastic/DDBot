@@ -22,7 +22,8 @@ module.exports = new Command("help", "View a list of commands", "[command]", ["c
                 var list = groups[key];
                 var allowedCommands = list.filter(k => {
                     var c = client.commandsManager.data.get(k);
-                    return c.userCanAccess(message.channel.type == "dm" ? message.author : message.member, message.channel.type == "dm") && k != "help";
+                    var dmSense = message.channel.type == "dm" ? c.supportsDM : true;
+                    return c.userCanAccess(message.channel.type == "dm" ? message.author : message.member, message.channel.type == "dm") && k != "help" && dmSense;
                 });
                 if (allowedCommands.length > 0) newGroups[key] = allowedCommands.map(c => {
                     var command = client.commandsManager.data.get(c);

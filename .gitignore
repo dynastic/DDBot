@@ -1,4 +1,4 @@
-**/config.json
+Source/config.json
 node_modules/
 .DS_Store
 *.lock
