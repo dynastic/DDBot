@@ -6,5 +6,5 @@ module.exports = new Command("8ball", "Ask the Magic 8-Ball!", null, ["magic8bal
         var embed = response.embedFactory.createInformativeEmbed("8-Ball says").setDescription(`${responses[Math.floor(Math.random() * responses.length)]}`);
         if(args[0]) embed.addField("In response to", args.join(" "));
         response.reply("", embed, true);
-    }
+    }, undefined, undefined, true
 );

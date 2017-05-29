@@ -37,5 +37,5 @@ module.exports = new Command("wolframalpha", "Submit your query to Wolfram Alpha
                 response.edit(postedMessage, postedMessage.content, response.embedFactory.createErrorEmbed().setDescription("An error occurred while trying to submit your query to Wolfram Alpha."));
             });
         }).catch(e => client.log(e, true));
-    }
+    }, undefined, undefined, true
 );

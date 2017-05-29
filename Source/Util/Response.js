@@ -1,9 +1,8 @@
-const EmbedFactory = require("./EmbedFactory");
-
 module.exports = class Response {
     constructor(message) {
         this.message = message;
-        this.embedFactory = new EmbedFactory(this.message.client);
+        this.isDM = !message.guild;
+        this.embedFactory = this.message.client.embedFactory;
     }
 
     send(content, embed, bypassRemoval) {
@@ -44,6 +43,7 @@ module.exports = class Response {
     }
 
     getMessageSelfDestructTime(isForBot) {
+        if(this.isDM) return null;
         var guildConfig = this.message.guild.getConfig();
         var removeTime = isForBot ? guildConfig.autoRemoveBotMessages : guildConfig.autoRemoveUserCommands;
         if(removeTime != null && removeTime >= 0) return removeTime;

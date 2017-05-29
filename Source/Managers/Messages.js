@@ -42,7 +42,7 @@ class MessagesManager {
             }
             var res = command.execute(this.client, message, response, args);
             if(res !== true) doSelfDestruct();
-        }).catch(e => client.log(e, true));
+        }).catch(e => this.client.log(e, true));
     }
 }
 

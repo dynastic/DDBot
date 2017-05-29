@@ -7,5 +7,5 @@ module.exports = new Command("bigletters", "Turn a boring string of text into be
         var newText = client.input.emojify(text);
         if(!newText || newText == "") return response.reply("", response.embedFactory.createErrorEmbed().setDescription("The text you entered was not long enough to form an emoji sentence."));
         return response.reply(newText, null, true);
-    }
+    }, undefined, undefined, true
 );

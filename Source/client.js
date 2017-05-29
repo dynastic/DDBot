@@ -12,6 +12,8 @@ const InputUtilities = require("./Util/Input");
 
 const Command = require("./Util/Command");
 
+const EmbedFactory = require("./Util/EmbedFactory");
+
 const client = new class extends Discord.Client {
     constructor() {
         super();
@@ -48,10 +50,11 @@ const client = new class extends Discord.Client {
             MANAGE_EMOJIS: "Manage Emojis"
         };
 
+        this.embedFactory = new EmbedFactory(this);
         this.messagesManager = new MessagesManager(this);
-        this.directMessagesManager = new DirectMessagesManager(this);
         this.commandsManager = new CommandsManager(this);
-        this.modulesManager = new ModuleManager(this);
+        this.directMessagesManager = new DirectMessagesManager(this);
+        this.modulesManager = new ModuleManager(this, this.commandsManager);
         this.input = new InputUtilities(this);
         this.config = require("./config");
 

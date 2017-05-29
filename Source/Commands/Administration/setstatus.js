@@ -11,5 +11,5 @@ module.exports = new Command("setstatus", "Set the bot's status", "<new status>"
         }).catch(err => {
             client.log(err, true);
         });
-    }, [], true
+    }, [], true, true
 );

@@ -1,5 +1,5 @@
 class Command {
-    constructor(command, description, argumentHints, aliases, execute, requiredPermissions, requiresAdmin) {
+    constructor(command, description, argumentHints, aliases, execute, requiredPermissions, requiresAdmin, supportsDM = false) {
         this.command = command;
 
         this.description = description;
@@ -13,11 +13,14 @@ class Command {
         this.requiredPermissions = requiredPermissions || [];
 
         this.requiresAdmin = requiresAdmin || false;
+
+        this.supportsDM = supportsDM;
     }
 
-    userCanAccess(member) {
+    userCanAccess(member, dm) {
         var isAdmin = member.client.config.admins.includes(member.id);
         if(this.requiresAdmin && !isAdmin) return false;
+        if(dm) return isAdmin;
         if(member) return (member.hasPermission(this.requiredPermissions)) || isAdmin;
         return false;
     }

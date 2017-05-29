@@ -6,5 +6,5 @@ module.exports = new Command("stop", "Stop the bot", null, [],
           client.destroy();
           process.exit();
         }).catch(e => client.log(e, true));
-    }, [], true
+    }, [], true, true
 );

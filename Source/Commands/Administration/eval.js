@@ -22,5 +22,5 @@ module.exports = new Command("eval", "Run code on the bot", "<code>", [],
             response.reply("", response.embedFactory.createErrorEmbed(null, message.member).setDescription(`\`\`\`\n${err.stack}\n\`\`\``), true);
         }
         return true;
-    }, [], true
+    }, [], true, true
 );
