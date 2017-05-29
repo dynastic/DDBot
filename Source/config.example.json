@@ -1,0 +1,20 @@
+{
+    "prefix": "!",
+    "token": "",
+    "botName": "DDBot",
+    "status": "!help | being helpful!",
+    "muteRole": "Muted",
+    "isDebugMode": false,
+    "database": "mongodb://localhost/ddbot",
+    "admins": [ // bot admins, they can access special bot settings and commands like eval
+        "207194778906001408",
+        "140527820500762624"
+    ],
+    "guilds": {
+        "274961647347695617": {
+            "autoRemoveBotMessages": 5, // set 0 to remove immmediately, -1 to not remove, or number of seconds to remove in
+            "autoRemoveUserCommands": 5, // same as "autoRemoveBotMessages"
+            "name": "Dynastic Development" // guild name, for reference
+        }
+    }
+}

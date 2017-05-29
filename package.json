@@ -1,0 +1,22 @@
+{
+  "name": "DDBot",
+  "version": "1.0.0",
+  "main": "Source/source.js",
+  "dependencies": {
+    "cleverbot.io": "^1.0.4",
+    "discord.js": "^11.0.0",
+    "fs-extra-promise": "^0.4.1",
+    "moment": "^2.17.1",
+    "mongoose": "^4.9.6",
+    "mongoose-auto-increment": "^5.0.1",
+    "request-promise": "^4.1.1",
+    "string.prototype.at": "^0.2.0",
+    "ytdl-core": "^0.10.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+http://git.dynastic.co/dynastic/bot.git"
+  },
+  "author": "Dynastic Development",
+  "homepage": "https://dynastic.co/bot"
+}
