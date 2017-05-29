@@ -1,6 +1,6 @@
 module.exports = (string, regex) => {
-    let matches = [];
-    let m;
+    var matches = [];
+    var m;
     if (regex.global) {
         while (m = regex.exec(string)) {
             matches.push(m);

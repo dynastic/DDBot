@@ -8,7 +8,7 @@ class DirectMessagesManager {
     handle(message) {
         if (message.author.bot) return;
 
-        let response = new Response(message);
+        var response = new Response(message);
     }
 }
 

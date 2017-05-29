@@ -16,7 +16,7 @@ class Command {
     }
 
     userCanAccess(member) {
-        let isAdmin = member.client.config.admins.includes(member.id);
+        var isAdmin = member.client.config.admins.includes(member.id);
         if(this.requiresAdmin && !isAdmin) return false;
         if(member) return (member.hasPermissions(this.requiredPermissions)) || isAdmin;
         return false;

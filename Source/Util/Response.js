@@ -7,7 +7,7 @@ module.exports = class Response {
     }
 
     send(content, embed, bypassRemoval) {
-        let selfDestruct = (bypassRemoval || false) ? null : this.getMessageSelfDestructTime(true);
+        var selfDestruct = (bypassRemoval || false) ? null : this.getMessageSelfDestructTime(true);
         var checkAutoRemove = (msg) => { if(selfDestruct != null) msg.delete(selfDestruct * 1000) };
         embed = this.modifyEmbedForSelfDestructTime(embed, selfDestruct);
         return embed ?
@@ -16,7 +16,7 @@ module.exports = class Response {
     }
 
     edit(message, content, embed, bypassRemoval) {
-        let selfDestruct = (bypassRemoval || false) ? null : this.getMessageSelfDestructTime(true);
+        var selfDestruct = (bypassRemoval || false) ? null : this.getMessageSelfDestructTime(true);
         var checkAutoRemove = (msg) => { if(selfDestruct != null) msg.delete(selfDestruct * 1000) };
         embed = this.modifyEmbedForSelfDestructTime(embed, selfDestruct);
         return embed ?
@@ -25,7 +25,7 @@ module.exports = class Response {
     }
 
     reply(content, embed, bypassRemoval) {
-        let contentSuffix = content && content != "" ? `: ${content}` : "";
+        var contentSuffix = content && content != "" ? `: ${content}` : "";
         return this.send(`⦗${this.message.author}⦘${contentSuffix}`, embed, bypassRemoval);
     }
 
@@ -45,7 +45,7 @@ module.exports = class Response {
 
     getMessageSelfDestructTime(isForBot) {
         var guildConfig = this.message.guild.getConfig();
-        let removeTime = isForBot ? guildConfig.autoRemoveBotMessages : guildConfig.autoRemoveUserCommands;
+        var removeTime = isForBot ? guildConfig.autoRemoveBotMessages : guildConfig.autoRemoveUserCommands;
         if(removeTime != null && removeTime >= 0) return removeTime;
         return null;
     }

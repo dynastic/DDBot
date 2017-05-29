@@ -4,11 +4,11 @@ const Moderation = require("../../Util/Moderation");
 
 module.exports = new Command("assignrole", "Toggle a role on a user", "<user> <role>", ["role", "setrole", "changerole", "managerole", "togglerole", "addrole", "removerole", "remrole", "rmrole", "delrole", "deleterole"],
     (client, message, response, args) => {
-        let modUtils = new Moderation(client), user = message.mentions.users.first(), role = message.mentions.roles.first();
+        var modUtils = new Moderation(client), user = message.mentions.users.first(), role = message.mentions.roles.first();
 
         if(!user || !role) return response.reply("", response.embedFactory.createErrorEmbed(null, message.member).setDescription("You did not specify both a user and a role."));
 
-        let member = modUtils.userCanPerformActionError(message.member, user, message.guild);
+        var member = modUtils.userCanPerformActionError(message.member, user, message.guild);
         if(typeof member === "string") return response.reply("", response.embedFactory.createErrorEmbed(null, message.member).setDescription(member));
 
         if(Discord.Role.comparePositions(message.member.highestRole, role) <= 0 && user != message.author) return response.reply("", response.embedFactory.createErrorEmbed(null, message.member).setDescription("You can't perform actions with a role higher than your highest role."))

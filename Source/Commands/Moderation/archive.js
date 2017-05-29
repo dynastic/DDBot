@@ -13,17 +13,17 @@ module.exports = new Command("archive", "Uploads messages to ghostbin", "[count:
         response.reply("", response.embedFactory.createInformativeEmbed("Retrieving messages...", message.member).setDescription("An archive of this channel's messages is being created..."), true).then(postedMessage => {
             var msg2 = postedMessage;
             message.channel.largeFetchMessages(count + 2).then(messages => {
-                let archivedLines = [`=== [ MESSAGES ARCHIVED FROM #${message.channel.name.toUpperCase()} (${message.guild.name.toUpperCase()}) ] ===\n`]
+                var archivedLines = [`=== [ MESSAGES ARCHIVED FROM #${message.channel.name.toUpperCase()} (${message.guild.name.toUpperCase()}) ] ===\n`]
                 var recordedMessages = 0;
                 messages.forEach((msg, index, arr) => {
                     if(msg.cleanContent == "") return
                     if(msg.id == msg2.id || msg.id == message.id) return // return if message is bot's message or command message
-                    let ts = msg.createdAt;
-                    let name = getFormattedDisplayName(msg.author, message.msg)
+                    var ts = msg.createdAt;
+                    var name = getFormattedDisplayName(msg.author, message.msg)
                     // Datestamp
-                    let shouldShowDatestamp = true;
+                    var shouldShowDatestamp = true;
                     if(arr[index - 1]) shouldShowDatestamp = !moment(ts).isSame(arr[index - 1].createdAt, 'day');
-                    let formattedTime = moment.utc(ts).format("HH:mm:ss");
+                    var formattedTime = moment.utc(ts).format("HH:mm:ss");
                     if(shouldShowDatestamp) archivedLines.push(` ---( ${moment.utc(ts).format("MMMM Do, YYYY")} )--- `)
                     // Push our message line
                     recordedMessages += 1;
@@ -31,12 +31,12 @@ module.exports = new Command("archive", "Uploads messages to ghostbin", "[count:
                 })
                 archivedLines.push("\n=== [ MESSAGE ARCHIVE END ] ===");
                 archivedLines.push("(Created with DDBot. All dates are UTC.)");
-                let archiveText = archivedLines.join("\n");
+                var archiveText = archivedLines.join("\n");
                 response.edit(postedMessage, postedMessage.content, response.embedFactory.createInformativeEmbed("Uploading...", message.member).setDescription("An archive of this channel's messages is being uploaded to Ghostbin..."), true).then(postedMessage => {
                     rp({url: 'https://www.ghostbin.com/paste/new', method: 'POST', form: {"text": archiveText, "lang": "text"}, headers: {"Content-Type": "application/x-www-form-urlencoded", "User-Agent": "DDBot/1.0"}}).catch(function (err) {
-                        let redirectURL = err.response.headers.location;
+                        var redirectURL = err.response.headers.location;
                         if(err.name == "StatusCodeError" && err.statusCode == 303 && redirectURL) {
-                            let url = "https://www.ghostbin.com" + redirectURL;
+                            var url = "https://www.ghostbin.com" + redirectURL;
                             response.edit(msg2, msg2.content, response.embedFactory.createSuccessEmbed("Upload Complete", message.member).setDescription("An archive of this channel's message has been uploaded to Ghostbin.").addField("URL", url, true).addField("Messages", recordedMessages, true).setURL(url), true);
                         } else {
                             client.log(err, true);

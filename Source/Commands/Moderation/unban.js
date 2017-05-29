@@ -4,11 +4,11 @@ const Case = require("../../Model/case");
 
 module.exports = new Command("unban", "Unban a user", "<username/userID>", [],
     (client, message, response, args) => {
-        let modUtils = new Moderation(client);
+        var modUtils = new Moderation(client);
 
         if(!args[0]) return response.reply("", response.embedFactory.createErrorEmbed(null, message.member).setDescription("You did not specify a user to unban."));
 
-        let userStr = args.join(" ");
+        var userStr = args.join(" ");
 
         message.guild.fetchBans().then(bans => {
             var foundUser = false;
