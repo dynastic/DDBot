@@ -43,19 +43,23 @@ class Steamboat {
                 }).catch(e => this.client.log(e, true));
             });
         }).on('messageDelete', message => {
-            if(message.author.bot) return;
+            if(message.author.id == this.client.user.id) return;
+            if(message.content !== this.client.config.prefix && message.content.startsWith(this.client.config.prefix) && !message.content.startsWith(this.client.config.prefix + this.client.config.prefix)) return;
             this.initialize(message.guild).then(modLog => {
                 modLog.send(`:wastebasket: ${message.author.tag} (\`${message.author.id}\`) message deleted in **#${message.channel.name}**:\n${message.cleanContent}`);
             }).catch(e => this.client.log(e, true));
         }).on('messageDeleteBulk', messages => {
             messages.array().forEach(m => {
+                if(m.author.id == this.client.user.id) return;
+                if(m.content !== this.client.config.prefix && m.content.startsWith(this.client.config.prefix) && !m.content.startsWith(this.client.config.prefix + this.client.config.prefix))
                 this.initialize(m.guild).then(modLog => {
                     modLog.send(`:wastebasket: ${m.author.tag} (\`${m.author.id}\`) message deleted in **#${m.channel.name}**:\n${m.cleanContent}`)
                 }).catch(e => this.client.log(e, true))
             })
         }).on('messageUpdate', (oldM, newM) => {
+            if(newM.author.id == this.client.user.id) return;
             this.initialize(newM.guild).then(modLog => {
-                modLog.send(`:pencil: ${message.author.tag} (\`${message.author.id}\`) message edited in #report-abuse:\nB: ${oldM.text}\nA: ${newM.text}`)
+                modLog.send(`:pencil: ${newM.author.tag} (\`${newM.author.id}\`) message edited in #${newM.channel.name}:\nB: ${oldM.content}\nA: ${newM.content}`)
             }).catch(e => this.client.log(e, true));
         }).on('roleCreate', role => {
             this.initialize(role.guild).then(modLog => {
