@@ -15,7 +15,9 @@ const Command = require("./Util/Command");
 const client = new class extends Discord.Client {
     constructor() {
         super();
-
+        process.on('unhandledRejection', rejection => {
+            console.log(rejection);
+        })
         this.fullPermissions = {
             CREATE_INSTANT_INVITE: "Create Instant Invite",
             KICK_MEMBERS: "Kick Members",
