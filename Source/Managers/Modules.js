@@ -3,7 +3,7 @@ const path = require("path");
 const modulesDirectory = path.resolve(`${__dirname.replace(/\/\w+$/, ``)}/Modules/`);
 
 class ModuleManager {
-    constructor(client) {
+    constructor(client, commandsManager) {
         this.client = client;
         this.modules = new Map();
         this.loadAll();
@@ -29,9 +29,13 @@ class ModuleManager {
         fs.walk(modulesDirectory).on("data", i => {
             var file = path.parse(i.path);
             if (!file.ext || file.ext !== ".js") return;
-            var directory = path.dirname(i.path);
-            this.load(file.name, `${file.dir}${path.sep}${file.base}`).catch(e => console.log(e));
-            loadCount++;
+            if(path.dirname(i.path).toLowerCase().includes("commands")) {
+                //Load the command!
+                this.client.commandsManager.load(file.name, "Steamboat", `${file.dir}${path.sep}${file.base}`);
+            } else {
+                this.load(file.name, `${file.dir}${path.sep}${file.base}`).catch(e => console.log(e));
+                loadCount++;
+            }
         }).on("end", () => this.client.log(`Loaded ${loadCount} module${loadCount == 1 ? "" : "s"}!`));
         return this;
     }

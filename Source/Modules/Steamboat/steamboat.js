@@ -1,5 +1,6 @@
-const config = require('./config');
 const JsDiff = require("diff");
+const fs = require("fs-extra-promise");
+const path = require("path");
 
 class Steamboat {
     static get IDENTIFIER() {
@@ -8,7 +9,7 @@ class Steamboat {
 
     constructor(client) {
         this.client = client;
-        this.config = config;
+        this.config = require('./config');
         this.load();
     }
 
@@ -85,6 +86,7 @@ class Steamboat {
                 modLog.send(`:rotating_light: ***ROLE UPDATED*** ${newR.name} \`{oldPermissions: ${oldR.permissions}, newPermissions: ${newR.permissions}}\``);
             }).catch(e => this.client.log(e, true));
         })
+        
     }
 
     initialize(guild) {
