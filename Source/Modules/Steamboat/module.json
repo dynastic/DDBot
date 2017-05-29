@@ -1,0 +1,9 @@
+{
+    "identifier": "co.dynastic.steamboat",
+    "main": "steamboat.js",
+    "commands": {
+        "directory": "Commands",
+        "group": "Administration"
+    },
+    "name": "Steamboat"
+}

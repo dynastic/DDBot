@@ -3,9 +3,6 @@ const fs = require("fs-extra-promise");
 const path = require("path");
 
 class Steamboat {
-    static get IDENTIFIER() {
-        return "dynastic.steamboat";
-    }
 
     constructor(client) {
         this.client = client;

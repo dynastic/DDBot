@@ -7,7 +7,7 @@ module.exports = class Response {
 
     send(content, embed, bypassRemoval) {
         var selfDestruct = (bypassRemoval || false) ? null : this.getMessageSelfDestructTime(true);
-        var checkAutoRemove = (msg) => { if(selfDestruct != null) msg.delete(selfDestruct * 1000) };
+        var checkAutoRemove = (msg) => { if(selfDestruct != null) msg.delete(selfDestruct * 1000).catch(e => "Failed to delete message: " + e.name) };
         embed = this.modifyEmbedForSelfDestructTime(embed, selfDestruct);
         return embed ?
             this.message.channel.send(content, { embed }).then(msg => { checkAutoRemove(msg); return msg; }).catch(e => log(e, true)) :
@@ -16,7 +16,7 @@ module.exports = class Response {
 
     edit(message, content, embed, bypassRemoval) {
         var selfDestruct = (bypassRemoval || false) ? null : this.getMessageSelfDestructTime(true);
-        var checkAutoRemove = (msg) => { if(selfDestruct != null) msg.delete(selfDestruct * 1000) };
+        var checkAutoRemove = (msg) => { if(selfDestruct != null) msg.delete(selfDestruct * 1000).catch(e => "Failed to delete message: " + e.name) };
         embed = this.modifyEmbedForSelfDestructTime(embed, selfDestruct);
         return embed ?
             message.edit(content, { embed: embed }).then(msg => { checkAutoRemove(msg); return msg; }).catch(e => log(e, true)) :
