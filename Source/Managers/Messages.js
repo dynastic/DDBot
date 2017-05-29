@@ -13,8 +13,7 @@ class MessagesManager {
 
     handle(message) {
         if (message.channel.type === "dm") return this.client.directMessagesManager.handle(message);
-
-        if (message.author.bot || !message.content.startsWith(this.client.config.prefix) || message.channel.type !== "text") return;
+        if(message.content == this.client.config.prefix || !message.content.startsWith(this.client.config.prefix) || message.content.startsWith(this.client.config.prefix + this.client.config.prefix) || message.channel.type !== "text") return;
         var isAdmin = this.isAdmin(message.author);
 
         var args = message.content.split(" ")
