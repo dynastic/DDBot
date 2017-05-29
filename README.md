@@ -48,7 +48,7 @@ You can instruct pm2 to save the currently running pm2 instances and start them 
 
 * [AppleBetas](https://applebetas.co) - Core Developer
 * [nullpixel](https://nullpixel.uk) - Core Developer
-* [Eric Rabil](https://www.github.com/EricRabil) - Project Developer
+* [Eric Rabil](https://www.github.com/EricRabil) - Core Developer 
 * [CloneClasher](https://www.github.com/CloneClasher) - Contributor
 
 ## Special Thanks to
