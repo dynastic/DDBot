@@ -14,7 +14,7 @@ module.exports = new Command("help", "View a list of commands", "[command]", ["c
                     embed.addField("Alias" + (command.aliases.length == 1 ? "" : "es"), command.aliases.map(alias => `• \`${client.config.prefix}${alias}\``).join("\n"), true);
                 }
                 return response.reply("", embed, true);
-            });
+            }).catch(e => client.log(e, true));
         } else {
             var groups = client.commandsManager.groups;
             var newGroups = {};

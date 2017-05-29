@@ -40,7 +40,7 @@ module.exports = new Command("mute", "Mute/unmutes a user", "<user>", ["muteuser
                 muteRole = client.getMuteRoleForGuild(message.guild);
                 if(!muteRole) return response.reply("", response.embedFactory.createErrorEmbed(null, message.member).setDescription("Could not find the mute role. Please ensure that the bot is allowed to manage roles on this guild."));
                 doMute(muteRole);
-            })
+            }).catch(e => client.log(e, true))
         } else {
             doMute(muteRole);
         }

@@ -43,12 +43,12 @@ module.exports = new Command("archive", "Uploads messages to ghostbin", "[count:
                             response.edit(msg2, msg2.content, response.embedFactory.createErrorEmbed(null, message.member).setDescription("An error occurred while trying to upload the archive to Ghostbin."));
                         }
                     });
-                });
+                }).catch(e => client.log(e, true));
             }).catch(err => {
                 client.log(err, true);
                 response.reply("", response.embedFactory.createErrorEmbed(null, message.member).setDescription("An unknown error occurred while trying to archive messages."));
             })
-        });
+        }).catch(e => client.log(e, true));
     }, ["MANAGE_MESSAGES"]
 );
 

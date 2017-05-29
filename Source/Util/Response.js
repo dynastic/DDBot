@@ -11,8 +11,8 @@ module.exports = class Response {
         var checkAutoRemove = (msg) => { if(selfDestruct != null) msg.delete(selfDestruct * 1000) };
         embed = this.modifyEmbedForSelfDestructTime(embed, selfDestruct);
         return embed ?
-            this.message.channel.sendMessage(content, { embed }).then(msg => { checkAutoRemove(msg); return msg; }) :
-            this.message.channel.sendMessage(content).then(msg => { checkAutoRemove(msg); return msg; });
+            this.message.channel.send(content, { embed }).then(msg => { checkAutoRemove(msg); return msg; }).catch(e => log(e, true)) :
+            this.message.channel.send(content).then(msg => { checkAutoRemove(msg); return msg; }).catch(e => log(e, true));
     }
 
     edit(message, content, embed, bypassRemoval) {
@@ -20,8 +20,8 @@ module.exports = class Response {
         var checkAutoRemove = (msg) => { if(selfDestruct != null) msg.delete(selfDestruct * 1000) };
         embed = this.modifyEmbedForSelfDestructTime(embed, selfDestruct);
         return embed ?
-            message.edit(content, { embed: embed }).then(msg => { checkAutoRemove(msg); return msg; }) :
-            message.edit(content).then(msg => { checkAutoRemove(msg); return msg; });
+            message.edit(content, { embed: embed }).then(msg => { checkAutoRemove(msg); return msg; }).catch(e => log(e, true)) :
+            message.edit(content).then(msg => { checkAutoRemove(msg); return msg; }).catch(e => log(e, true));
     }
 
     reply(content, embed, bypassRemoval) {
@@ -31,8 +31,8 @@ module.exports = class Response {
 
     dm(content, embed) {
         return embed ?
-            this.message.author.sendMessage(content, { embed }) :
-            this.message.author.sendMessage(content);
+            this.message.author.send(content, { embed }) :
+            this.message.author.send(content);
     }
 
     modifyEmbedForSelfDestructTime(embed, selfDestruct) {
@@ -48,6 +48,10 @@ module.exports = class Response {
         var removeTime = isForBot ? guildConfig.autoRemoveBotMessages : guildConfig.autoRemoveUserCommands;
         if(removeTime != null && removeTime >= 0) return removeTime;
         return null;
+    }
+
+    log(message, error) {
+        error ? console.error(message) : console.log(message);
     }
 
 };

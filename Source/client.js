@@ -112,7 +112,7 @@ const client = new class extends Discord.Client {
                             this.setMutedPermsOnChannel(channel, mutedRole);
                         });
                         resolve(guild);
-                    });
+                    }).catch(e => this.log(e, true));
                 } else {
                     var mutedRole = this.getMuteRoleForGuild(guild);
                     guild.channels.forEach(channel => {

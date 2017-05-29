@@ -16,7 +16,7 @@ module.exports = new Command("purge", "Deletes the latest messages in the channe
                     client.log(err, true);
                     response.edit(message, message.content, response.embedFactory.createErrorEmbed(null, origMessage.member).setDescription("An unknown error occurred while trying to purge messages."));
                 });
-            });
+            }).catch(e => client.log(e, true));
         }).catch(err => {
             client.log(err, true);
             response.reply("", response.embedFactory.createErrorEmbed(null, message.member).setDescription("An unknown error occurred while trying to purge messages."));

@@ -27,6 +27,6 @@ module.exports = new Command("unban", "Unban a user", "<username/userID>", [],
             if(!foundUser) {
                 response.reply("", response.embedFactory.createErrorEmbed(null, message.member).setDescription("Could not find a banned user with that name or ID."));
             }
-        });
+        }).catch(e => client.log(e, true));
     }, ["BAN_MEMBERS"]
 );
