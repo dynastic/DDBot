@@ -10,7 +10,7 @@ A Discord bot developed by the Dynastic Development Team.
 
 You're in luck! You don't need to run the bot yourself. You can add our copy of DDBot to your server here. It is up-to-date with the latest changes and is up 24/7.
 
-#### [Add DDBot](https://discordapp.com/oauth2/authorize?client_id=290294410938155008&permissions=535882838&redirect_uri=https%3A%2F%2Fdynastic.co%2Fbot%2Fauth&response_type=code&scope=bot&state=tEP4SiYR1px4nX7xuuw686LQT9hFuXGivSAneqAcCgQ%3D)
+### [Add DDBot to my server](https://discordapp.com/oauth2/authorize?client_id=290294410938155008&permissions=535882838&redirect_uri=https%3A%2F%2Fdynastic.co%2Fbot%2Fauth&response_type=code&scope=bot&state=tEP4SiYR1px4nX7xuuw686LQT9hFuXGivSAneqAcCgQ%3D)
 
 ## Getting started
 
