@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const autoIncrement = require("mongoose-auto-increment");
 
 const MessagesManager = require("./Managers/Messages");
+const ModuleManager = require("./Managers/Modules");
 const DirectMessagesManager = require("./Managers/DirectMessages");
 const CommandsManager = require("./Managers/Commands");
 const InputUtilities = require("./Util/Input");
@@ -48,6 +49,7 @@ const client = new class extends Discord.Client {
         this.messagesManager = new MessagesManager(this);
         this.directMessagesManager = new DirectMessagesManager(this);
         this.commandsManager = new CommandsManager(this);
+        this.modulesManager = new ModuleManager(this);
         this.input = new InputUtilities(this);
         this.config = require("./config");
 
