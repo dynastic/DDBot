@@ -22,8 +22,8 @@ module.exports = class Moderation {
 
   userCanPerformActionError(performingMember, actionUser, guild) {
       // Checks if the performingUser is allowed to perform the action (e.g. kick, ban) on the actionUser (is the user a higher role) (returns null if can perform, returns message if can't)
-    let botMember = guild.members.get(guild.client.user.id);
-    let actionMember = guild.members.get(actionUser.id);
+    var botMember = guild.members.get(guild.client.user.id);
+    var actionMember = guild.members.get(actionUser.id);
     if(!actionMember) return "The user you attempted to perform the action on is not in the server.";
     if(actionMember.user == this.client.user) return "You can't make me do that to myself!";
     if(Discord.Role.comparePositions(botMember.highestRole, actionMember.highestRole) <= 0/* && botMember != actionMember*/) return "You cannot perform that action on that user because I am not of a higher role than them."

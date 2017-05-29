@@ -13,7 +13,7 @@ class CommandsManager {
     }
 
     load(name, groupName, path) {
-        let command = require(path);
+        var command = require(path);
         if (this.data.has(command.command)) {
             delete require.cache[require.resolve(path)];
         }
@@ -28,10 +28,10 @@ class CommandsManager {
         var loadCount = 0;
         var client = this.client;
         fs.walk(commands).on("data", item => {
-            let file = path.parse(item.path);
+            var file = path.parse(item.path);
             if (!file.ext || file.ext !== ".js") return;
-            let dirPath = path.dirname(item.path);
-            let groupName = dirPath == commands ? "Other" : path.basename(dirPath);
+            var dirPath = path.dirname(item.path);
+            var groupName = dirPath == commands ? "Other" : path.basename(dirPath);
             this.load(file.name, groupName, `${file.dir}${path.sep}${file.base}`);
 
             loadCount += 1;
@@ -44,7 +44,7 @@ class CommandsManager {
     reload(input) {
         return new Promise((resolve, reject) => {
             if (!this.data.has(input)) return reject("Invalid Command");
-            let command = this.data.get(input);
+            var command = this.data.get(input);
             this.load(input, command.path);
         });
     }

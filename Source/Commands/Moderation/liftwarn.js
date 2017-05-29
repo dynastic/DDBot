@@ -5,7 +5,7 @@ const UserInfo = require("../../Model/userInfo");
 
 module.exports = new Command("liftwarn", "Lift warning points from a user", "<user> <points>", ["liftwarnpoints"],
     (client, message, response, args) => {
-        let modUtils = new Moderation(client), user = message.mentions.users.first(), points = args[1];
+        var modUtils = new Moderation(client), user = message.mentions.users.first(), points = args[1];
 
         if(user == message.author) return response.reply("", response.embedFactory.createErrorEmbed(null, message.member).setDescription("You may not warn yourself."));
         if(!modUtils.validateUserArgument(user, args[0])) return response.reply("", response.embedFactory.createErrorEmbed(null, message.member).setDescription("You did not specify a user to warn."));
@@ -14,7 +14,7 @@ module.exports = new Command("liftwarn", "Lift warning points from a user", "<us
         points = parseInt(points);
         if(points <= 0) return response.reply("", response.embedFactory.createErrorEmbed(null, message.member).setDescription(`The amount of points to remove must be above zero. To give points, use \`${client.config.prefix}warn\`.`));
 
-        let member = modUtils.userCanPerformActionError(message.member, user, message.guild);
+        var member = modUtils.userCanPerformActionError(message.member, user, message.guild);
         if(typeof member === "string") return response.reply("", response.embedFactory.createErrorEmbed(null, message.member).setDescription(member));
 
         Case.createCase(message.author, "liftwarn", user, message.guild, null, -points).then(newCase => {

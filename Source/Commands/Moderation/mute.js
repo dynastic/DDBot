@@ -5,9 +5,9 @@ const Case = require("../../Model/case");
 
 module.exports = new Command("mute", "Mute/unmutes a user", "<user>", ["muteuser", "unmute", "unmuteuser", "togglemute", "setmute"],
     (client, message, response, args) => {
-        let modUtils = new Moderation(client), user = message.mentions.users.first(), muteRole = client.getMuteRoleForGuild(message.guild);
+        var modUtils = new Moderation(client), user = message.mentions.users.first(), muteRole = client.getMuteRoleForGuild(message.guild);
         var doMute = (muteRole) => {
-            let member = modUtils.userCanPerformActionError(message.member, user, message.guild);
+            var member = modUtils.userCanPerformActionError(message.member, user, message.guild);
             if(typeof member === "string") return response.reply("", response.embedFactory.createErrorEmbed(null, message.member).setDescription(member));
 
             if(member.roles.array().includes(muteRole)) {
@@ -40,7 +40,7 @@ module.exports = new Command("mute", "Mute/unmutes a user", "<user>", ["muteuser
                 muteRole = client.getMuteRoleForGuild(message.guild);
                 if(!muteRole) return response.reply("", response.embedFactory.createErrorEmbed(null, message.member).setDescription("Could not find the mute role. Please ensure that the bot is allowed to manage roles on this guild."));
                 doMute(muteRole);
-            })
+            }).catch(e => client.log(e, true))
         } else {
             doMute(muteRole);
         }

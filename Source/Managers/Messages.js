@@ -13,18 +13,17 @@ class MessagesManager {
 
     handle(message) {
         if (message.channel.type === "dm") return this.client.directMessagesManager.handle(message);
+        if(message.content == this.client.config.prefix || !message.content.startsWith(this.client.config.prefix) || message.content.startsWith(this.client.config.prefix + this.client.config.prefix) || message.channel.type !== "text") return;
+        var isAdmin = this.isAdmin(message.author);
 
-        if (message.author.bot || !message.content.startsWith(this.client.config.prefix) || message.channel.type !== "text") return;
-        let isAdmin = this.isAdmin(message.author);
-
-        let args = message.content.split(" ")
-        let cstr = args[0].slice(this.client.config.prefix.length);
+        var args = message.content.split(" ")
+        var cstr = args[0].slice(this.client.config.prefix.length);
         args.shift();
 
-        let response = new Response(message);
+        var response = new Response(message);
 
         this.client.commandsManager.get(cstr).then(command => {
-            let selfDestruct = response.getMessageSelfDestructTime(false);
+            var selfDestruct = response.getMessageSelfDestructTime(false);
             function doSelfDestruct() {
                 if(selfDestruct != null) message.delete(selfDestruct * 1000);
             }
@@ -41,9 +40,9 @@ class MessagesManager {
                 doSelfDestruct();
                 return response.reply("", this.embedFactory.createBadPermsEmbed());
             }
-            let res = command.execute(this.client, message, response, args);
+            var res = command.execute(this.client, message, response, args);
             if(res !== true) doSelfDestruct();
-        });
+        }).catch(e => client.log(e, true));
     }
 }
 

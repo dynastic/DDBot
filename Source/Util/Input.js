@@ -19,7 +19,7 @@ module.exports = class Input {
       for (var i = 0; i<text.length; i++){
         var strChar = text.at(i).toLowerCase();
         if(strChar.match(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g)) newText += strChar;
-        let char = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+        var char = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
         if(char.includes(strChar)) newText += `:regional_indicator_${strChar}:`;
         if(strChar == "1") newText += ":one:";
         if(strChar == "2") newText += ":two:";

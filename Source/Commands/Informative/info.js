@@ -5,7 +5,7 @@ const UserInfo = require("../../Model/userInfo");
 
 module.exports = new Command("info", "View information about a user.", "<user>", ["userinfo", "whois", "userinfo", "ui", "lookupuser", "userlookup", "ul", "warnpoints"],
     (client, message, response, args) => {
-        let modUtils = new Moderation(client), user = message.mentions.users.first();
+        var modUtils = new Moderation(client), user = message.mentions.users.first();
         var member = message.guild.members.get(user.id);
         if(!modUtils.validateUserArgument(user, args[0]) && member) return response.reply("", response.embedFactory.createErrorEmbed(null).setDescription("You did not specify a user to lookup info on."));
 

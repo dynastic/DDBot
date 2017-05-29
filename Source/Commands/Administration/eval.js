@@ -3,9 +3,9 @@ const util = require("util");
 
 module.exports = new Command("eval", "Run code on the bot", "<code>", [],
     (client, message, response, args) => {
-        let code = args.join(" ");
+        var code = args.join(" ");
         try {
-            let output = eval(code);
+            var output = eval(code);
 
             output instanceof Promise ?
                 output.then(a => {

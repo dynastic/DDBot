@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const autoIncrement = require("mongoose-auto-increment");
 
 const MessagesManager = require("./Managers/Messages");
+const ModuleManager = require("./Managers/Modules");
 const DirectMessagesManager = require("./Managers/DirectMessages");
 const CommandsManager = require("./Managers/Commands");
 const InputUtilities = require("./Util/Input");
@@ -14,7 +15,9 @@ const Command = require("./Util/Command");
 const client = new class extends Discord.Client {
     constructor() {
         super();
-
+        process.on('unhandledRejection', rejection => {
+            console.log(rejection);
+        })
         this.fullPermissions = {
             CREATE_INSTANT_INVITE: "Create Instant Invite",
             KICK_MEMBERS: "Kick Members",
@@ -48,6 +51,7 @@ const client = new class extends Discord.Client {
         this.messagesManager = new MessagesManager(this);
         this.directMessagesManager = new DirectMessagesManager(this);
         this.commandsManager = new CommandsManager(this);
+        this.modulesManager = new ModuleManager(this);
         this.input = new InputUtilities(this);
         this.config = require("./config");
 
@@ -63,7 +67,7 @@ const client = new class extends Discord.Client {
         .on("guildCreate", guild => this.saveConfig())
         .on("channelCreate", channel => {
             if(!channel.guild) return;
-            let mutedRole = this.getMuteRoleForGuild(channel.guild);
+            var mutedRole = this.getMuteRoleForGuild(channel.guild);
             this.setMutedPermsOnChannel(channel, mutedRole);
         })
         .once("ready", () => {
@@ -93,9 +97,9 @@ const client = new class extends Discord.Client {
 
     createMutedRole(guild) {
         return new Promise((resolve, reject) => {
-            let member = guild.members.get(this.user.id);
+            var member = guild.members.get(this.user.id);
             if(member.hasPermission("MANAGE_ROLES_OR_PERMISSIONS") && this.config.muteRole && this.config.muteRole != "") {
-                let roleNames = guild.roles.array().map(role => role.name);
+                var roleNames = guild.roles.array().map(role => role.name);
                 if(roleNames.indexOf(this.config.muteRole) === -1) {
                     guild.createRole({
                         name: this.config.muteRole,
@@ -108,9 +112,9 @@ const client = new class extends Discord.Client {
                             this.setMutedPermsOnChannel(channel, mutedRole);
                         });
                         resolve(guild);
-                    });
+                    }).catch(e => this.log(e, true));
                 } else {
-                    let mutedRole = this.getMuteRoleForGuild(guild);
+                    var mutedRole = this.getMuteRoleForGuild(guild);
                     guild.channels.forEach(channel => {
                         this.setMutedPermsOnChannel(channel, mutedRole);
                     });
@@ -160,13 +164,13 @@ Discord.Guild.prototype.getConfig = function() {
 Discord.TextChannel.prototype.largeFetchMessages = function(limit) {
     var channel = this;
     return new Promise((resolve, reject) => {
-        let retrievedMessages = [];
+        var retrievedMessages = [];
         function getMessages(beforeID) {
-            let options = {limit: limit ? Math.min(100, Math.max(0, limit - retrievedMessages.length)) : 100};
+            var options = {limit: limit ? Math.min(100, Math.max(0, limit - retrievedMessages.length)) : 100};
             options.before = beforeID
             channel.fetchMessages(options).then((messages) => {
                 retrievedMessages = retrievedMessages.concat(messages.array());;
-                let last = messages.last();
+                var last = messages.last();
                 if(last && (retrievedMessages.length < limit || !limit)) return setTimeout(() => { getMessages(last.id) }, 250);
                  return resolve(retrievedMessages);
             }).catch((err) => {
