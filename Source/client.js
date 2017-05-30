@@ -8,6 +8,8 @@ const ModuleManager = require("./Managers/Modules");
 const CommandsManager = require("./Managers/Commands");
 const InputUtilities = require("./Util/Input");
 
+const DirectMessagesManager = require("./Managers/DirectMessages");
+
 const Command = require("./Util/Command");
 
 const EmbedFactory = require("./Util/EmbedFactory");
@@ -47,10 +49,11 @@ const client = new class extends Discord.Client {
             MANAGE_WEBHOOKS: "Manage Webhooks",
             MANAGE_EMOJIS: "Manage Emojis"
         };
-
+        
         this.cwd = __dirname;
         this.embedFactory = new EmbedFactory(this);
         this.commandsManager = new CommandsManager(this);
+        this.directMessagesManager = new DirectMessagesManager(this);
         this.modulesManager = new ModuleManager(this, this.commandsManager);
         this.input = new InputUtilities(this);
         this.config = require("./config");
@@ -64,7 +67,7 @@ const client = new class extends Discord.Client {
             this.user.setAvatar(__dirname + "/resources/icon.png").catch(e => e.code !== undefined ? this.log(e, true) : null);
             this.setStatusFromConfig();
         })
-            .on("message", message => message.guild.manager.messagesManager.handle(message))
+            .on("message", message => message.guild ? message.guild.manager.messagesManager.handle(message) : this.directMessagesManager.handle(message))
             .on("guildCreate", guild => this.saveConfig())
             .on("channelCreate", channel => {
                 if (!channel.guild) return;
@@ -206,43 +209,57 @@ const client = new class extends Discord.Client {
         }).on("message", (message) => {
             this.modulesManager.modules.forEach(moduleEvent => {
                 if (!moduleEvent.meta || !moduleEvent.meta.identifier) return;
-                if (message.guild.getConfig().disabledModules && message.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
+                if (message.type == "text") {
+                    if (message.guild.getConfig().disabledModules && message.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
+                }
                 if (moduleEvent.events && moduleEvent.events.message) moduleEvent.events.message(message);
             })
         }).on("messageDelete", (message) => {
             this.modulesManager.modules.forEach(moduleEvent => {
                 if (!moduleEvent.meta || !moduleEvent.meta.identifier) return;
-                if (message.guild.getConfig().disabledModules && message.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
+                if (message.type == "text") {
+                    if (message.guild.getConfig().disabledModules && message.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
+                }
                 if (moduleEvent.events && moduleEvent.events.messageDelete) moduleEvent.events.messageDelete(message);
             })
         }).on("messageDeleteBulk", (collection) => {
             this.modulesManager.modules.forEach(moduleEvent => {
                 if (!moduleEvent.meta || !moduleEvent.meta.identifier) return;
-                if (collection.first().guild.getConfig().disabledModules && collection.first().guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
+                if (collection.first().type == "text") {
+                    if (collection.first().guild.getConfig().disabledModules && collection.first().guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
+                }
                 if (moduleEvent.events && moduleEvent.events.messageDeleteBulk) moduleEvent.events.messageDeleteBulk(collection);
             })
         }).on("messageReactionAdd", (messageReaction, user) => {
             this.modulesManager.modules.forEach(moduleEvent => {
                 if (!moduleEvent.meta || !moduleEvent.meta.identifier) return;
-                if (messageReaction.message.guild.getConfig().disabledModules && messageReaction.message.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
+                if (messageReaction.message.type == "text") {
+                    if (messageReaction.message.guild.getConfig().disabledModules && messageReaction.message.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
+                }
                 if (moduleEvent.events && moduleEvent.events.messageReactionAdd) moduleEvent.events.messageReactionAdd(messageReaction, user);
             })
         }).on("messageReactionRemove", (messageReaction, user) => {
             this.modulesManager.modules.forEach(moduleEvent => {
                 if (!moduleEvent.meta || !moduleEvent.meta.identifier) return;
-                if (messageReaction.message.guild.getConfig().disabledModules && messageReaction.message.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
+                if (messageReaction.message.type == "text") {
+                    if (messageReaction.message.guild.getConfig().disabledModules && messageReaction.message.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
+                }
                 if (moduleEvent.events && moduleEvent.events.messageReactionRemove) moduleEvent.events.messageReactionRemove(messageReaction, user);
             })
         }).on("messageReactionRemoveAll", (message) => {
             this.modulesManager.modules.forEach(moduleEvent => {
                 if (!moduleEvent.meta || !moduleEvent.meta.identifier) return;
-                if (message.guild.getConfig().disabledModules && message.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
+                if(message.type == "text") {
+                    if (message.guild.getConfig().disabledModules && message.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
+                }
                 if (moduleEvent.events && moduleEvent.events.messageReactionRemoveAll) moduleEvent.events.messageReactionRemoveAll(message);
             })
         }).on("messageUpdate", (oldMessage, newMessage) => {
             this.modulesManager.modules.forEach(moduleEvent => {
                 if (!moduleEvent.meta || !moduleEvent.meta.identifier) return;
-                if (newMessage.guild.getConfig().disabledModules && newMessage.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
+                if (newMessage.type == "text") {
+                    if (newMessage.guild.getConfig().disabledModules && newMessage.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
+                }
                 if (moduleEvent.events && moduleEvent.events.messageUpdate) moduleEvent.events.messageUpdate(oldMessage, newMessage);
             })
         }).on("presenceUpdate", (oldMember, newMember) => {

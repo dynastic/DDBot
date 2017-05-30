@@ -1,9 +1,8 @@
 const Response = require("../Util/Response");
 
 class DirectMessagesManager {
-    constructor(guild) {
-        this.guild = guild;
-        this.client = guild.client;
+    constructor(client) {
+        this.client = client;
         this.embedFactory = this.client.embedFactory;
     }
 
@@ -16,7 +15,7 @@ class DirectMessagesManager {
         var admin = this.client.config.admins.includes(message.author), args = message.content.split(" "), cstr = args[0].slice(this.client.config.prefix.length);
         args.shift();
         var response = new Response(message);
-        var command = this.guild.manager.commandsManager.get(cstr).then(command => {
+        var command = this.client.commandsManager.get(cstr).then(command => {
             if(!command) {
                 if(!cstr.length) return;
                 return response.reply("", this.embedFactory.createUnknownCommandEmbed());
