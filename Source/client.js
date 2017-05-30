@@ -54,6 +54,7 @@ const client = new class extends Discord.Client {
         this.modulesManager = new ModuleManager(this, this.commandsManager);
         this.input = new InputUtilities(this);
         this.config = require("./config");
+        this.meta = require("../package");
 
         mongoose.connect(this.config.database);
         autoIncrement.initialize(mongoose.connection);
