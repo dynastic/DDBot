@@ -209,7 +209,7 @@ const client = new class extends Discord.Client {
         }).on("message", (message) => {
             this.modulesManager.modules.forEach(moduleEvent => {
                 if (!moduleEvent.meta || !moduleEvent.meta.identifier) return;
-                if (message.type == "text") {
+                if (message.channel.type == "text") {
                     if (message.guild.getConfig().disabledModules && message.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
                 }
                 if (moduleEvent.events && moduleEvent.events.message) moduleEvent.events.message(message);
@@ -217,7 +217,7 @@ const client = new class extends Discord.Client {
         }).on("messageDelete", (message) => {
             this.modulesManager.modules.forEach(moduleEvent => {
                 if (!moduleEvent.meta || !moduleEvent.meta.identifier) return;
-                if (message.type == "text") {
+                if (message.channel.type == "text") {
                     if (message.guild.getConfig().disabledModules && message.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
                 }
                 if (moduleEvent.events && moduleEvent.events.messageDelete) moduleEvent.events.messageDelete(message);
@@ -233,7 +233,7 @@ const client = new class extends Discord.Client {
         }).on("messageReactionAdd", (messageReaction, user) => {
             this.modulesManager.modules.forEach(moduleEvent => {
                 if (!moduleEvent.meta || !moduleEvent.meta.identifier) return;
-                if (messageReaction.message.type == "text") {
+                if (messageReaction.message.channel.type == "text") {
                     if (messageReaction.message.guild.getConfig().disabledModules && messageReaction.message.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
                 }
                 if (moduleEvent.events && moduleEvent.events.messageReactionAdd) moduleEvent.events.messageReactionAdd(messageReaction, user);
@@ -241,7 +241,7 @@ const client = new class extends Discord.Client {
         }).on("messageReactionRemove", (messageReaction, user) => {
             this.modulesManager.modules.forEach(moduleEvent => {
                 if (!moduleEvent.meta || !moduleEvent.meta.identifier) return;
-                if (messageReaction.message.type == "text") {
+                if (messageReaction.message.channel.type == "text") {
                     if (messageReaction.message.guild.getConfig().disabledModules && messageReaction.message.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
                 }
                 if (moduleEvent.events && moduleEvent.events.messageReactionRemove) moduleEvent.events.messageReactionRemove(messageReaction, user);
@@ -249,7 +249,7 @@ const client = new class extends Discord.Client {
         }).on("messageReactionRemoveAll", (message) => {
             this.modulesManager.modules.forEach(moduleEvent => {
                 if (!moduleEvent.meta || !moduleEvent.meta.identifier) return;
-                if(message.type == "text") {
+                if(message.channel.type == "text") {
                     if (message.guild.getConfig().disabledModules && message.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
                 }
                 if (moduleEvent.events && moduleEvent.events.messageReactionRemoveAll) moduleEvent.events.messageReactionRemoveAll(message);
@@ -257,7 +257,7 @@ const client = new class extends Discord.Client {
         }).on("messageUpdate", (oldMessage, newMessage) => {
             this.modulesManager.modules.forEach(moduleEvent => {
                 if (!moduleEvent.meta || !moduleEvent.meta.identifier) return;
-                if (newMessage.type == "text") {
+                if (newMessage.channel.type == "text") {
                     if (newMessage.guild.getConfig().disabledModules && newMessage.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
                 }
                 if (moduleEvent.events && moduleEvent.events.messageUpdate) moduleEvent.events.messageUpdate(oldMessage, newMessage);
@@ -297,13 +297,17 @@ const client = new class extends Discord.Client {
         }).on("typingStart", (channel, user) => {
             this.modulesManager.modules.forEach(moduleEvent => {
                 if (!moduleEvent.meta || !moduleEvent.meta.identifier) return;
-                if (channel.guild.getConfig().disabledModules && channel.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
+                if (channel.type == "text") {
+                    if (channel.guild.getConfig().disabledModules && channel.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
+                }
                 if (moduleEvent.events && moduleEvent.events.typingStart) moduleEvent.events.typingStart(channel, user);
             })
         }).on("typingStop", (channel, user) => {
             this.modulesManager.modules.forEach(moduleEvent => {
                 if (!moduleEvent.meta || !moduleEvent.meta.identifier) return;
-                if (channel.guild.getConfig().disabledModules && channel.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
+                if (channel.type == "text") {
+                    if (channel.guild.getConfig().disabledModules && channel.guild.getConfig().disabledModules.includes(moduleEvent.meta.identifier)) return;
+                }
                 if (moduleEvent.events && moduleEvent.events.typingStop) moduleEvent.events.typingStop(channel, user);
             })
         }).on("userNoteUpdate", (user, oldNote, newNote) => {
