@@ -9,16 +9,5 @@
     "admins": [
         "207194778906001408",
         "140527820500762624"
-    ],
-    "guilds": {
-        "274961647347695617": {
-            "autoRemoveBotMessages": 5,
-            "autoRemoveUserCommands": 5,
-            "autoBanUserWarningPoints": 1000,
-            "autoKickUserWarningPoints": 300,
-            "name": "Dynastic Development",
-            "disabledCommands": [],
-            "disabledModules": []
-        }
-    }
+    ]
 }

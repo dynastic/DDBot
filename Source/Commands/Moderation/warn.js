@@ -18,7 +18,7 @@ module.exports = new Command("warn", "Warn a user", "<user> <points> [reason]", 
         if(typeof member === "string") return response.reply("", response.embedFactory.createErrorEmbed(null, message.member).setDescription(member));
 
         var reason = args[2] ? args.slice(2).join(" ") : null;
-
+        
         Case.createCase(message.author, "warn", user, message.guild, reason, points).then(newCase => {
             UserInfo.addWarningPoints(user, message.guild, points).then(userInfo => {
                 var reasonMessage = reason ? `\n**Reason:** ${reason}` : "";
