@@ -42,21 +42,21 @@ class Steamboat {
                 }).catch(e => this.client.log(e, true));
             });
         }).on('messageDelete', message => {
-            if(message.author.id == this.client.user.id) return;
+            if(message.author.id == this.client.user.id || message.author.bot) return;
             if(message.content !== this.client.config.prefix && message.content.startsWith(this.client.config.prefix) && !message.content.startsWith(this.client.config.prefix + this.client.config.prefix)) return;
             this.initialize(message.guild).then(modLog => {
                 modLog.send(`:wastebasket: ${message.author.tag} (\`${message.author.id}\`) message deleted in **#${message.channel.name}**:\n${message.cleanContent}`);
             }).catch(e => this.client.log(e, true));
         }).on('messageDeleteBulk', messages => {
             messages.array().forEach(m => {
-                if(m.author.id == this.client.user.id) return;
+                if(m.author.id == this.client.user.id || m.author.bot) return;
                 if(m.content !== this.client.config.prefix && m.content.startsWith(this.client.config.prefix) && !m.content.startsWith(this.client.config.prefix + this.client.config.prefix)) return;
                 this.initialize(m.guild).then(modLog => {
                     modLog.send(`:wastebasket: ${m.author.tag} (\`${m.author.id}\`) message deleted in **#${m.channel.name}**:\n${m.cleanContent}`)
                 }).catch(e => this.client.log(e, true))
             })
         }).on('messageUpdate', (oldM, newM) => {
-            if(newM.author.id == this.client.user.id) return;
+            if(newM.author.id == this.client.user.id || newM.author.bot) return;
             this.initialize(newM.guild).then(modLog => {
                 var markdownDiff = "";
                 JsDiff.diffChars(oldM.content, newM.content).forEach(diff => {
@@ -68,7 +68,7 @@ class Steamboat {
                         markdownDiff += diff.value;
                     }
                 });
-                modLog.send(`:pencil: ${newM.author.tag} (\`${newM.author.id}\`) message edited in #${newM.channel.name}:\n${markdownDiff}`)
+                modLog.send(`:pencil: ${newM.author.tag} (\`${newM.author.id}\`) message edited in **#${newM.channel.name}**:\n${markdownDiff}`)
             }).catch(e => this.client.log(e, true));
         }).on('roleCreate', role => {
             this.initialize(role.guild).then(modLog => {
