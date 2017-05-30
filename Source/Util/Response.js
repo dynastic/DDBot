@@ -44,7 +44,7 @@ module.exports = class Response {
 
     getMessageSelfDestructTime(isForBot) {
         if(this.isDM) return null;
-        var guildConfig = this.message.guild.manager.properties;
+        var guildConfig = this.message.guild.getConfig();
         var removeTime = isForBot ? guildConfig.autoRemoveBotMessages : guildConfig.autoRemoveUserCommands;
         if(removeTime != null && removeTime >= 0) return removeTime;
         return null;
