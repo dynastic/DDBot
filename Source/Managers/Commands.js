@@ -28,7 +28,6 @@ class CommandsManager {
     }
 
     loadAll() {
-        var loadCount = 0;
         var client = this.client;
         fs.walk(commands).on("data", item => {
             var file = path.parse(item.path);
@@ -36,11 +35,7 @@ class CommandsManager {
             var dirPath = path.dirname(item.path);
             var groupName = dirPath == commands ? "Other" : path.basename(dirPath);
             this.load(file.name, groupName, `${file.dir}${path.sep}${file.base}`);
-
-            loadCount += 1;
-        }).on('end', function() {
-          client.log(`Loaded ${loadCount} command${loadCount == 1 ? "" : "s"}!`);
-        });
+        })
         return this;
     }
 
