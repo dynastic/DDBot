@@ -21,6 +21,7 @@ module.exports = new Command("help", "View a list of commands", "[command]", ["c
             Object.keys(groups).forEach(function(key) {
                 var list = groups[key];
                 var allowedCommands = list.filter(k => {
+                    if(!k) return false;
                     var c = client.commandsManager.data.get(k);
                     var dmSense = message.channel.type == "dm" ? c.supportsDM : true;
                     return c.userCanAccess(message.channel.type == "dm" ? message.author : message.member, message.channel.type == "dm") && k != "help" && dmSense;

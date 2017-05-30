@@ -25,6 +25,9 @@ var GuildSchema = new Schema({
     }, name: {
         type: String,
         required: true
+    }, delegate: {
+        type: String,
+        required: false
     }, disabledCommands: [{
         type: String,
         required: true
