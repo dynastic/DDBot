@@ -1,6 +1,6 @@
 {
   "name": "DDBot",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "Source/source.js",
   "dependencies": {
     "bufferutil": "^3.0.0",
