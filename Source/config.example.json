@@ -18,9 +18,7 @@
             "autoKickUserWarningPoints": 300,
             "name": "Dynastic Development",
             "disabledCommands": [],
-            "disabledModules": [
-                "co.dynastic.steamboat"
-            ]
+            "disabledModules": []
         }
     }
 }

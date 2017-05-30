@@ -322,6 +322,8 @@ const client = new class extends Discord.Client {
             if (!this.config.guilds[guild.id].autoRemoveUserCommands) this.config.guilds[guild.id].autoRemoveUserCommands = 5;
             if (!this.config.guilds[guild.id].autoBanUserWarningPoints) this.config.guilds[guild.id].autoBanUserWarningPoints = 1000;
             if (!this.config.guilds[guild.id].autoKickUserWarningPoints) this.config.guilds[guild.id].autoKickUserWarningPoints = 300;
+            if (!this.config.guilds[guild.id].disabledCommands) this.config.guilds[guild.id].disabledCommands = [];
+            if (!this.config.guilds[guild.id].disabledModules) this.config.guilds[guild.id].disabledModules = [];
             this.config.guilds[guild.id].name = guild.name;
             guild.getManager();
         });
