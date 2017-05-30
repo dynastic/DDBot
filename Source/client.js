@@ -4,9 +4,7 @@ const path = require("path");
 const mongoose = require('mongoose');
 const autoIncrement = require("mongoose-auto-increment");
 
-const MessagesManager = require("./Managers/Messages");
 const ModuleManager = require("./Managers/Modules");
-const DirectMessagesManager = require("./Managers/DirectMessages");
 const CommandsManager = require("./Managers/Commands");
 const InputUtilities = require("./Util/Input");
 
@@ -50,10 +48,9 @@ const client = new class extends Discord.Client {
             MANAGE_EMOJIS: "Manage Emojis"
         };
 
+        this.cwd = __dirname;
         this.embedFactory = new EmbedFactory(this);
-        this.messagesManager = new MessagesManager(this);
         this.commandsManager = new CommandsManager(this);
-        this.directMessagesManager = new DirectMessagesManager(this);
         this.modulesManager = new ModuleManager(this, this.commandsManager);
         this.input = new InputUtilities(this);
         this.config = require("./config");
@@ -66,7 +63,7 @@ const client = new class extends Discord.Client {
             this.user.setAvatar(__dirname + "/resources/icon.png").catch(e =>  e.code !== undefined ? this.log(e, true) : null);
             this.setStatusFromConfig();
         })
-        .on("message", message => this.messagesManager.handle(message))
+        .on("message", message => message.guild.manager.messagesManager.handle(message))
         .on("guildCreate", guild => this.saveConfig())
         .on("channelCreate", channel => {
             if(!channel.guild) return;
@@ -95,6 +92,7 @@ const client = new class extends Discord.Client {
             if(!this.config.guilds[guild.id].autoBanUserWarningPoints) this.config.guilds[guild.id].autoBanUserWarningPoints = 1000;
             if(!this.config.guilds[guild.id].autoKickUserWarningPoints) this.config.guilds[guild.id].autoKickUserWarningPoints = 300;
             this.config.guilds[guild.id].name = guild.name;
+            guild.getManager();
         });
     }
 
@@ -162,6 +160,12 @@ const client = new class extends Discord.Client {
 
 Discord.Guild.prototype.getConfig = function() {
     return this.client.getGuildConfig(this);
+}
+
+Discord.Guild.prototype.getManager = function() {
+    const GuildInstance = require(this.client.cwd + path.sep + "Managers" + path.sep + "GuildInstance");
+    if(!this.manager) this.manager = new GuildInstance(this);
+    return this.manager;
 }
 
 Discord.TextChannel.prototype.largeFetchMessages = function(limit) {

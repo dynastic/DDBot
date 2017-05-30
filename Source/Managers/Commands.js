@@ -3,16 +3,19 @@ const path = require("path");
 const commands = path.resolve(`${__dirname.replace(/\/\w+$/, ``)}/Commands/`);
 
 class CommandsManager {
-    constructor(client) {
+    constructor(client, disabledCommands) {
         this.client = client;
 
         this.groups = {};
         this.data = new Map();
 
+        this.disabledCommands = disabledCommands || [];
+
         this.loadAll();
     }
 
     load(name, groupName, path) {
+        if(this.disabledCommands.includes(name)) return;
         var command = require(path);
         if (this.data.has(command.command)) {
             delete require.cache[require.resolve(path)];

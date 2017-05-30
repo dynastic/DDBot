@@ -1,10 +1,11 @@
 const Response = require("../Util/Response");
-const EmbedFactory = require("../Util/EmbedFactory");
+const DirectMessagesManager = require("./DirectMessages");
 
 class MessagesManager {
-    constructor(client) {
-        this.client = client;
-        this.embedFactory = new EmbedFactory(this.client);
+    constructor(guild) {
+        this.guild = guild;
+        this.client = guild.client;
+        this.directMessagesManager = new DirectMessagesManager(guild);
     }
 
     isAdmin(user) {
@@ -12,7 +13,7 @@ class MessagesManager {
     }
 
     handle(message) {
-        if (message.channel.type === "dm") return this.client.directMessagesManager.handle(message);
+        if (message.channel.type === "dm") return this.directMessagesManager.handle(message);
         if(message.content == this.client.config.prefix || !message.content.startsWith(this.client.config.prefix) || message.content.startsWith(this.client.config.prefix + this.client.config.prefix) || message.channel.type !== "text") return;
         var isAdmin = this.isAdmin(message.author);
 
@@ -22,7 +23,7 @@ class MessagesManager {
 
         var response = new Response(message);
 
-        this.client.commandsManager.get(cstr).then(command => {
+        this.guild.manager.commandsManager.get(cstr).then(command => {
             var selfDestruct = response.getMessageSelfDestructTime(false);
             function doSelfDestruct() {
                 if(selfDestruct != null) message.delete(selfDestruct * 1000);
@@ -31,14 +32,14 @@ class MessagesManager {
             if (!command) {
                 if (!cstr.length) return;
                 doSelfDestruct();
-                return response.reply("", this.embedFactory.createUnknownCommandEmbed());
+                return response.reply("", this.client.embedFactory.createUnknownCommandEmbed());
             }
 
             if(this.client.config.isDebugMode || false) console.log(`User ${message.author.username}#${message.author.discriminator} tried to run command with message: ${message.content}`);
             
             if (!command.userCanAccess(message.member)) {
                 doSelfDestruct();
-                return response.reply("", this.embedFactory.createBadPermsEmbed());
+                return response.reply("", this.client.embedFactory.createBadPermsEmbed());
             }
             var res = command.execute(this.client, message, response, args);
             if(res !== true) doSelfDestruct();
