@@ -10,10 +10,8 @@ module.exports = new Command("modules", "A module manager", null, [],
         var operations = {
             list: function(config) {
                 var modules = Array.from(message.client.modulesManager.modules.keys());
-                var content = '```--- AVAILABLE MODULES ---';
-                
-                modules.forEach(identifier => content += `\n${identifier}  ${config.disabledModules ? config.disabledModules.includes(identifier) ? "(DISABLED)" : "(ENABLED)" : "(ENABLED)"}`);
-                content += '\n--- AVAILABLE MODULES ---```';
+                var content = '';
+                modules.forEach(identifier => content += `\n\`${identifier}  ${config.disabledModules ? config.disabledModules.includes(identifier) ? "(Disabled)" : "(Enabled)" : "(Enabled)"}\``);
                 return response.reply("", response.embedFactory.createInformativeEmbed("Available Modules").setDescription(content));
             }, toggle: function(config) {
                 var identifier = args[1].toLowerCase();
@@ -37,10 +35,9 @@ module.exports = new Command("modules", "A module manager", null, [],
             if (err || !doc) return response.reply("", respnose.embedFactory.createErrorEmbed().setDescription(`An unknown error occured while validating your request:\n\`\`\`${err}\`\`\``));
             if (doc.delegate != message.author.id && !message.client.config.admins.includes(message.member.id)) return response.reply("", response.embedFactory.createBadPermsEmbed());
             if (!operations[args[0]]) {
-                var content = '```--- Unknown command, here is a list of commands. ---';
-                Object.keys(operations).forEach(command => content += `\n.modules ${command}`);
-                content += "```";
-                return response.reply("", response.embedFactory.createInformativeEmbed("Module Help").setDescription(content));
+                var content = '';
+                Object.keys(operations).forEach(command => content += `\n\`.modules ${command}\``);
+                return response.reply("", response.embedFactory.createInformativeEmbed("ModuleManager Commands").setDescription(content));
             }
             return operations[args[0]](doc);
         })
