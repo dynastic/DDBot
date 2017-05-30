@@ -24,7 +24,7 @@ module.exports = new Command("urbandictionary", "Look up a term using Urban Dict
                 response.edit(postedMessage, postedMessage.content, response.embedFactory.createErrorEmbed().setDescription("An error occurred while trying to the provided term with Urban Dictionary."));
             });
         }).catch(e => client.log(e, true));
-    }, undefined, undefined, true
+    }, [], false, true
 );
 
 var truncateNicely = (str, limit, suffix) => {

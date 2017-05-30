@@ -40,5 +40,5 @@ module.exports = new Command("help", "View a list of commands", "[command]", ["c
 
             return response.reply("", embed, true);
         }
-    }, undefined, undefined, true
+    }, [], false, true
 );

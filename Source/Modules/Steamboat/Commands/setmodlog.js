@@ -12,5 +12,5 @@ module.exports = new Command("setmodlog", "Sets the mod log channel for this gui
         config.guilds[gID].channel = channel.id;
         fs.writeFile(`${__dirname}/../config.json`, JSON.stringify(config, null, 4));
         return response.reply("", response.embedFactory.createSuccessEmbed(null, message.member).setDescription("The mod-log channel has been successfully set."));
-    }, ["MANAGE_SERVER"]
+    }, undefined, true, false
 );
