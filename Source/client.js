@@ -63,9 +63,7 @@ const client = new class extends Discord.Client {
 
         this.on("ready", () => {
             this.log(`Client ready to take commands`);
-            this.user.setAvatar(__dirname + "/resources/icon.png").catch(e => {
-                e.code !== undefined ? this.log(e, true) : null;
-            });
+            this.user.setAvatar(__dirname + "/resources/icon.png").catch(e =>  e.code !== undefined ? this.log(e, true) : null);
             this.setStatusFromConfig();
         })
         .on("message", message => this.messagesManager.handle(message))
