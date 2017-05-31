@@ -63,11 +63,11 @@ const client = new class extends Discord.Client {
             MANAGE_EMOJIS: "Manage Emojis"
         };
         
+        this.modulesManager = new ModuleManager(this, this.commandsManager);
         this.cwd = __dirname;
         this.embedFactory = new EmbedFactory(this);
         this.commandsManager = new CommandsManager(this);
         this.directMessagesManager = new DirectMessagesManager(this);
-        this.modulesManager = new ModuleManager(this, this.commandsManager);
         this.input = new InputUtilities(this);
         this.config = require("./config");
         this.meta = require("../package");

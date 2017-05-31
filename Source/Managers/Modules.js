@@ -3,9 +3,12 @@ const path = require("path");
 const modulesDirectory = path.resolve(`${__dirname.replace(/\/\w+$/, ``)}/Modules/`);
 
 class ModuleManager {
-    constructor(client, commandsManager) {
+    constructor(client) {
         this.client = client;
         this.modules = new Map();
+        this.commands = {};
+        this.commandGroups = {};
+        this.moduleMetas = {};
         this.loadAll();
     }
 
@@ -22,7 +25,6 @@ class ModuleManager {
     }
 
     loadAll() {
-        var loadCount = 0;
         fs.readdir(modulesDirectory, (err, files) => {
             if(err) return console.error(err);
             files.forEach((file, index) => {
@@ -31,35 +33,37 @@ class ModuleManager {
                     if(!s.isDirectory()) return;
                     var folder = path.parse(modulesDirectory + path.sep + file);
                     var nicePath = folder.dir + path.sep + folder.base + path.sep;
-                    fs.exists(nicePath + "module.json", metaExists => {
-                        if(!metaExists) return console.error("Skipping malformed module " + folder.name + " (231)");
+                    fs.stat(nicePath + "module.json", err => {
+                        if(err) return console.error("Skipping malformed module " + folder.name + " (231)");
                         var moduleMeta = require(nicePath + "module.json");
                         if(!moduleMeta.main) return console.error("Skipping malformed module " + folder.name + " (739)");
                         if(!moduleMeta.identifier) return console.error("Skipping malformed module " + folder.name + " (451)");
-                        fs.exists(nicePath + moduleMeta.main, mainExists => {
-                            if(!mainExists) return console.error("Skipping malformed module " + folder.name + " (379)");
+                        fs.stat(nicePath + moduleMeta.main, err => {
+                            if(err) return;
                             this.load(moduleMeta.identifier, nicePath + moduleMeta.main).catch(e => console.log(e));
-                            loadCount++;
+                            this.moduleMetas[moduleMeta.identifier] = moduleMeta;
                         })
-                        fs.exists(nicePath + moduleMeta.commands.directory, commandsExists => {
-                            if(!commandsExists) return console.error("Not loading commands for " + folder.name + " (845)");
-                            fs.stat(nicePath + moduleMeta.commands.directory, (e, s) => {
-                                if(e) return console.error(e);
-                                if(!s.isDirectory()) return console.error("Commands field must be a folder in module " + folder.name);
-                                fs.readdir(nicePath + moduleMeta.commands.directory, (cmdErr, cmdFiles) => {
-                                    if(cmdErr) return console.error(cmdErr);
-                                    cmdFiles.forEach(cmdFile => {
-                                        var cmdResolved = path.parse(nicePath + moduleMeta.commands.directory + path.sep + cmdFile);
-                                        this.client.commandsManager.load(cmdFile, moduleMeta.commands.group ? moduleMeta.commands.group : moduleMeta.name, nicePath + moduleMeta.commands.directory + path.sep + cmdFile)
-                                    })
+                        fs.stat(nicePath + moduleMeta.commands.directory, (e, s) => {
+                            if(e) return;
+                            if(!s.isDirectory()) return console.error("Commands field must be a folder in module " + folder.name);
+                            fs.readdir(nicePath + moduleMeta.commands.directory, (cmdErr, cmdFiles) => {
+                                if(cmdErr) return console.error(cmdErr);
+                                cmdFiles.forEach(cmdFile => {
+                                    var cmdResolved = path.parse(nicePath + moduleMeta.commands.directory + path.sep + cmdFile);
+                                    this.commands[cmdResolved.name] = {
+                                        module: moduleMeta.identifier,
+                                        group: moduleMeta.commands.group ? moduleMeta.commands.group : moduleMeta.name,
+                                        command: require(nicePath + moduleMeta.commands.directory + path.sep + cmdFile)
+                                    }
+                                    if (!this.commandGroups[this.commands[cmdResolved.name].module]) this.commandGroups[this.commands[cmdResolved.name].module] = [];
+                                    this.commandGroups[this.commands[cmdResolved.name].module].push(this.commands[cmdResolved.name].command.command);
                                 })
                             })
                         })
                     })
                 })
             });
-        })
-        return this;
+        });
     }
 
     reload(input) {

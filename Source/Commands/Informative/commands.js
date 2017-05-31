@@ -4,7 +4,7 @@ module.exports = new Command("help", "View a list of commands", "[command]", ["c
     (client, message, response, args) => {
         if(args[0]) {
             var c = args[0].replace("/^" + client.config.prefix + "/", '');
-            var command = client.commandsManager.get(c).then(command => {
+            var command = message.guild.manager.commandsManager.get(c).then(command => {
                 if(!command) return response.reply("", response.embedFactory.createUnknownCommandEmbed());
                 if(!command.userCanAccess(message.member)) return response.reply("", response.embedFactory.createBadPermsEmbed());
                 var embed = response.embedFactory.createInformativeEmbed(`Information about \`${client.config.prefix}${command.command}\``)
@@ -16,18 +16,36 @@ module.exports = new Command("help", "View a list of commands", "[command]", ["c
                 return response.reply("", embed, true);
             }).catch(e => client.log(e, true));
         } else {
-            var groups = client.commandsManager.groups;
+            var duplicate = function(origin, add) {
+                // Don't do anything if add isn't an object
+                if (!add || typeof add !== 'object') return origin;
+
+                var keys = Object.keys(add);
+                var length = keys.length;
+                for (var i = 0; i < length; i++) {
+                    origin[keys[i]] = add[keys[i]];
+                }
+                return origin;
+            };
+            var groups = duplicate({}, message.guild.manager.commandsManager.groups);
+            var moduleCommands = client.modulesManager.commandGroups;
+            Object.keys(moduleCommands).forEach(identifier => {
+                if(message.guild && message.guild.manager.properties.disabledModules && message.guild.manager.properties.disabledModules.includes(identifier)) return;
+                var meta = client.modulesManager.moduleMetas[identifier];
+                var tag = meta.commands.group ? meta.commands.group : meta.name ? meta.name : "Utilities";
+                if(groups[tag]) return groups[tag] = groups[tag].concat(moduleCommands[identifier]);
+                groups[tag] = moduleCommands[identifier];
+            })
             var newGroups = {};
             Object.keys(groups).forEach(function(key) {
                 var list = groups[key];
                 var allowedCommands = list.filter(k => {
-                    if(!k) return false;
-                    var c = client.commandsManager.data.get(k);
+                    var c = message.guild.manager.commandsManager.getSync(k);
                     var dmSense = message.channel.type == "dm" ? c.supportsDM : true;
                     return c.userCanAccess(message.channel.type == "dm" ? message.author : message.member, message.channel.type == "dm") && k != "help" && dmSense;
                 });
                 if (allowedCommands.length > 0) newGroups[key] = allowedCommands.map(c => {
-                    var command = client.commandsManager.data.get(c);
+                    var command = message.guild.manager.commandsManager.getSync(c);
                     return `• \`${client.config.prefix}${command.command}\``
                 }).join("\n");
             })

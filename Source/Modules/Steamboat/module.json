@@ -3,7 +3,7 @@
     "main": "steamboat.js",
     "commands": {
         "directory": "Commands",
-        "group": "Administration"
+        "group": "Utilities"
     },
     "name": "Steamboat"
 }
