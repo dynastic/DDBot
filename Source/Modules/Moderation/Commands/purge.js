@@ -1,5 +1,5 @@
-const Command = require("../../Util/Command");
-const Moderation = require("../../Util/Moderation");
+const Command = require("../../../Util/Command");
+const Moderation = require("../../../Util/Moderation");
 
 module.exports = new Command("purge", "Deletes the latest messages in the channel", "[count:10]", ["prune", "clean"],
     (client, message, response, args) => {

@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
-const Command = require("../../Util/Command");
-const Moderation = require("../../Util/Moderation");
+const Command = require("../../../Util/Command");
+const Moderation = require("../../../Util/Moderation");
 const moment = require("moment");
 var rp = require('request-promise');
 

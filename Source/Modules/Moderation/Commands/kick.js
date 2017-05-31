@@ -1,6 +1,6 @@
-const Command = require("../../Util/Command");
-const Moderation = require("../../Util/Moderation");
-const Case = require("../../Model/case");
+const Command = require("../../../Util/Command");
+const Moderation = require("../../../Util/Moderation");
+const Case = require("../../../Model/case");
 
 module.exports = new Command("kick", "Kick a user", "<user> [reason]", [],
     (client, message, response, args) => {

@@ -1,6 +1,6 @@
-const Command = require("../../Util/Command");
-const Moderation = require("../../Util/Moderation");
-const Case = require("../../Model/case");
+const Command = require("../../../Util/Command");
+const Moderation = require("../../../Util/Moderation");
+const Case = require("../../../Model/case");
 
 module.exports = new Command("case", "View a moderator action case", "<case number>", ["viewcase", "caselookup", "lookupcase", "cl", "vc", "caseinfo", "viewaction", "actionlookup"],
     (client, message, response, args) => {
