@@ -1,4 +1,4 @@
-const Command = require("../../Util/Command");
+const Command = require("../../../Util/Command");
 
 module.exports = new Command("bigletters", "Turn a boring string of text into beautiful emoji letters", "<text>", ["bl", "emojiletters", "bigletter", "emojiletter"],
     (client, message, response, args) => {

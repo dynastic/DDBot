@@ -1,0 +1,9 @@
+{
+    "identifier": "co.dynastic.utilities",
+    "main": "utilities.js",
+    "commands": {
+        "directory": "Commands",
+        "group": "Utilities"
+    },
+    "name": "Dynastic Utilities"
+}

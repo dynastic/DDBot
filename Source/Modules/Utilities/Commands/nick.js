@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
-const Command = require("../../Util/Command");
-const Moderation = require("../../Util/Moderation");
+const Command = require("../../../Util/Command");
+const Moderation = require("../../../Util/Moderation");
 
 module.exports = new Command("nick", "Set a nickname", "[user] [nickname]", ["setnick", "setnickname", "nickname"],
     (client, message, response, args) => {

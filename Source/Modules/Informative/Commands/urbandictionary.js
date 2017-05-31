@@ -1,5 +1,5 @@
-const Command = require("../../Util/Command");
-const Moderation = require("../../Util/Moderation");
+const Command = require("../../../Util/Command");
+const Moderation = require("../../../Util/Moderation");
 var rp = require('request-promise');
 
 module.exports = new Command("urbandictionary", "Look up a term using Urban Dictionary", "<query>", ["urban", "ud", "urband", "defineurban", "urbandefinition", "udictionary", "udict", "urbandict"],

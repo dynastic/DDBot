@@ -1,4 +1,4 @@
-const Command = require("../../Util/Command");
+const Command = require("../../../Util/Command");
 
 module.exports = new Command("quote", "Quote a user's message!", "<message ID> [channel]", ["cite", "echo", "retell", "repeat"],
     (client, message, response, args) => {

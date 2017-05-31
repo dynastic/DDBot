@@ -1,4 +1,4 @@
-const Command = require("../../Util/Command");
+const Command = require("../../../Util/Command");
 const yt = require('ytdl-core');
 
 module.exports = new Command("play", "plays a song from youtube", "<url>", ["yt"],
