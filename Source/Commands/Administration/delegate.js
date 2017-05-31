@@ -16,6 +16,7 @@ module.exports = new Command("delegate", "Delegate guild management to a user", 
             if (!client.guilds.get(guild).members.get(user)) return response.reply("", response.embedFactory.createErrorEmbed().setDescription(`<@${user}> is not a member of that guild.`));
             docs.delegate = user;
             docs.save();
+            client.guilds.get(guild).manager.properties = docs;
             return response.reply("", response.embedFactory.createSuccessEmbed("Guild Ownership Delegated", message.member).setDescription(`Guild was successfully delegated to <@${user}>`));
         })
     }, [], true, true
