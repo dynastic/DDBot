@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
-const Command = require("../../Util/Command");
-const Moderation = require("../../Util/Moderation");
-const Case = require("../../Model/case");
+const Command = require("../../../Util/Command");
+const Moderation = require("../../../Util/Moderation");
+const Case = require("../../../Model/case");
 
 module.exports = new Command("mute", "Mute/unmutes a user", "<user>", ["muteuser", "unmute", "unmuteuser", "togglemute", "setmute"],
     (client, message, response, args) => {

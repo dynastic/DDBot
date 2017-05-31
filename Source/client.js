@@ -16,6 +16,8 @@ const GuildConfig = require("./Model/guild");
 
 const EmbedFactory = require("./Util/EmbedFactory");
 
+const Logger = require("./Util/Logger");
+
 const defaultGuildConfig = {
     snowflake: "251208047706374154",
     autoRemoveBotMessges: 5,
@@ -31,7 +33,7 @@ const client = new class extends Discord.Client {
     constructor() {
         super();
         process.on('unhandledRejection', rejection => {
-            console.log(rejection);
+            this.log(rejection, true);
         })
         this.fullPermissions = {
             CREATE_INSTANT_INVITE: "Create Instant Invite",
@@ -67,6 +69,9 @@ const client = new class extends Discord.Client {
         this.cwd = __dirname;
         this.embedFactory = new EmbedFactory(this);
         this.input = new InputUtilities(this);
+        this.commandsManager = new CommandsManager(this);
+        this.directMessagesManager = new DirectMessagesManager(this);
+        
         this.config = require("./config");
         this.meta = require("../package");
 
@@ -460,7 +465,7 @@ const client = new class extends Discord.Client {
             var member = guild.members.get(this.user.id);
             if (member.hasPermission("MANAGE_ROLES_OR_PERMISSIONS") && this.config.muteRole && this.config.muteRole != "") {
                 var roleNames = guild.roles.array().map(role => role.name);
-                if (roleNames.indexOf(this.config.muteRole) === -1) {
+                if (!roleNames[this.config.muteRole]) {
                     guild.createRole({
                         name: this.config.muteRole,
                         color: "#ff0000",
@@ -529,8 +534,8 @@ const client = new class extends Discord.Client {
 
     log(content, error = false) {
         error ?
-            console.error(content) :
-            console.log(content);
+            Logger.error(content) :
+            Logger.log(content);
     }
 };
 

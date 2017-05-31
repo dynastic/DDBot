@@ -1,13 +1,15 @@
-const Command = require("../../Util/Command");
-const Moderation = require("../../Util/Moderation");
-const Case = require("../../Model/case");
-const UserInfo = require("../../Model/userInfo");
+const Command = require("../../../Util/Command");
+const Moderation = require("../../../Util/Moderation");
+const Case = require("../../../Model/case");
+const UserInfo = require("../../../Model/userInfo");
 
 module.exports = new Command("info", "View information about a user.", "<user>", ["userinfo", "whois", "userinfo", "ui", "lookupuser", "userlookup", "ul", "warnpoints"],
     (client, message, response, args) => {
+        var badArgs = response.embedFactory.createErrorEmbed(null).setDescription("You did not specify a user to lookup info on.");
+        if(!args[0]) return response.reply("", badArgs);
         var modUtils = new Moderation(client), user = message.mentions.users.first();
         var member = message.guild.members.get(user.id);
-        if(!modUtils.validateUserArgument(user, args[0]) && member) return response.reply("", response.embedFactory.createErrorEmbed(null).setDescription("You did not specify a user to lookup info on."));
+        if(!modUtils.validateUserArgument(user, args[0]) || !member) return response.reply("", badArgs);
 
         UserInfo.getMemberInfo(member, userInfo => {
             var embed = response.embedFactory.createInformativeEmbed(`Information on ${user.username}#${user.discriminator}`);

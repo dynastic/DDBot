@@ -7,6 +7,7 @@ class ModuleManager {
         this.client = client;
         this.modules = new Map();
         this.commands = {};
+        this.commandAliases = {};
         this.commandGroups = {};
         this.moduleMetas = {};
         this.loadAll();
@@ -26,35 +27,37 @@ class ModuleManager {
 
     loadAll() {
         fs.readdir(modulesDirectory, (err, files) => {
-            if(err) return console.error(err);
+            if(err) return this.client.log(err, true);
             files.forEach((file, index) => {
                 fs.stat(modulesDirectory + path.sep + file, (e, s) => {
-                    if(e) return console.error(e);
+                    if(e) return this.client.log(e, true);
                     if(!s.isDirectory()) return;
                     var folder = path.parse(modulesDirectory + path.sep + file);
                     var nicePath = folder.dir + path.sep + folder.base + path.sep;
                     fs.stat(nicePath + "module.json", err => {
-                        if(err) return console.error("Skipping malformed module " + folder.name + " (231)");
+                        if(err) return this.client.log("Skipping malformed module " + folder.name + " (231)");
                         var moduleMeta = require(nicePath + "module.json");
-                        if(!moduleMeta.main) return console.error("Skipping malformed module " + folder.name + " (739)");
-                        if(!moduleMeta.identifier) return console.error("Skipping malformed module " + folder.name + " (451)");
+                        if(!moduleMeta.main) return this.client.log("Skipping malformed module " + folder.name + " (739)");
+                        if(!moduleMeta.identifier) return this.client.log("Skipping malformed module " + folder.name + " (451)");
                         fs.stat(nicePath + moduleMeta.main, err => {
                             if(err) return;
-                            this.load(moduleMeta.identifier, nicePath + moduleMeta.main).catch(e => console.log(e));
+                            this.load(moduleMeta.identifier, nicePath + moduleMeta.main).catch(e => this.client.log(e, true));
                             this.moduleMetas[moduleMeta.identifier] = moduleMeta;
                         })
                         fs.stat(nicePath + moduleMeta.commands.directory, (e, s) => {
                             if(e) return;
-                            if(!s.isDirectory()) return console.error("Commands field must be a folder in module " + folder.name);
+                            if(!s.isDirectory()) return this.client.log("Commands field must be a folder in module " + folder.name);
                             fs.readdir(nicePath + moduleMeta.commands.directory, (cmdErr, cmdFiles) => {
-                                if(cmdErr) return console.error(cmdErr);
+                                if(cmdErr) return this.client.log(cmdErr);
                                 cmdFiles.forEach(cmdFile => {
                                     var cmdResolved = path.parse(nicePath + moduleMeta.commands.directory + path.sep + cmdFile);
-                                    this.commands[cmdResolved.name] = {
+                                    var commandMeta = {
                                         module: moduleMeta.identifier,
                                         group: moduleMeta.commands.group ? moduleMeta.commands.group : moduleMeta.name,
                                         command: require(nicePath + moduleMeta.commands.directory + path.sep + cmdFile)
-                                    }
+                                    };
+                                    this.commands[cmdResolved.name] = commandMeta;
+                                    commandMeta.command.aliases.forEach(alias => this.commandAliases[alias] = commandMeta);
                                     if (!this.commandGroups[this.commands[cmdResolved.name].module]) this.commandGroups[this.commands[cmdResolved.name].module] = [];
                                     this.commandGroups[this.commands[cmdResolved.name].module].push(this.commands[cmdResolved.name].command.command);
                                 })

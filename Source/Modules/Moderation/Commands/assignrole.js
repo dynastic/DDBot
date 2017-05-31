@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
-const Command = require("../../Util/Command");
-const Moderation = require("../../Util/Moderation");
+const Command = require("../../../Util/Command");
+const Moderation = require("../../../Util/Moderation");
 
 module.exports = new Command("assignrole", "Toggle a role on a user", "<user> <role>", ["role", "setrole", "changerole", "managerole", "togglerole", "addrole", "removerole", "remrole", "rmrole", "delrole", "deleterole"],
     (client, message, response, args) => {

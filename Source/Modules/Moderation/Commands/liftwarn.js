@@ -1,7 +1,7 @@
-const Command = require("../../Util/Command");
-const Moderation = require("../../Util/Moderation");
-const Case = require("../../Model/case");
-const UserInfo = require("../../Model/userInfo");
+const Command = require("../../../Util/Command");
+const Moderation = require("../../../Util/Moderation");
+const Case = require("../../../Model/case");
+const UserInfo = require("../../../Model/userInfo");
 
 module.exports = new Command("liftwarn", "Lift warning points from a user", "<user> <points>", ["liftwarnpoints"],
     (client, message, response, args) => {

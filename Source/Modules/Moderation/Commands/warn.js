@@ -1,7 +1,7 @@
-const Command = require("../../Util/Command");
-const Moderation = require("../../Util/Moderation");
-const Case = require("../../Model/case");
-const UserInfo = require("../../Model/userInfo");
+const Command = require("../../../Util/Command");
+const Moderation = require("../../../Util/Moderation");
+const Case = require("../../../Model/case");
+const UserInfo = require("../../../Model/userInfo");
 
 module.exports = new Command("warn", "Warn a user", "<user> <points> [reason]", [],
     (client, message, response, args) => {

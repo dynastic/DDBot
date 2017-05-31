@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const autoIncrement = require("mongoose-auto-increment");
+const Logger = require("../Util/Logger");
 
 var CaseSchema = new Schema({
     modID: {
@@ -48,7 +49,7 @@ CaseSchema.statics.createCase = function(modUser, type, user, guild, reason = nu
         });
         newCase.save(function(err) {
             if (err) {
-                console.error("Error trying to save case: " + err);
+                Logger.error("Error trying to save case: " + err);
                 return reject(err);
             }
             resolve(newCase);

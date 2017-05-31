@@ -1,0 +1,9 @@
+{
+    "identifier": "co.dynastic.moderation",
+    "main": "moderation.js",
+    "commands": {
+        "directory": "Commands",
+        "group": "Moderation"
+    },
+    "name": "Dynastic Moderation"
+}

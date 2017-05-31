@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Logger = require('../Util/Logger');
 
 var GuildSchema = new Schema({
     snowflake: {
@@ -46,7 +47,7 @@ GuildSchema.statics.createConfig = function(id, name) {
         
         newConfig.save(function(err) {
             if (err) {
-                console.error("Error trying to save guild configuration: " + err);
+                Logger.error("Error trying to save guild configuration: " + err);
                 return reject(err);
             }
             resolve(newConfig);
