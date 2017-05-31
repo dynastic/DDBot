@@ -45,7 +45,6 @@ class CommandsManager {
     get(text) {
         text = text.toLowerCase();
         return new Promise((resolve, reject) => {
-            console.log(this.disabledCommands + "|" + text);
             if (this.guild && this.guild.manager.properties.disabledCommands && this.guild.manager.properties.disabledCommands.includes(text)) return resolve(); 
             if (this.data.has(text)) return resolve(this.data.get(text));
             this.data.forEach(c => {
