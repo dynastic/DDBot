@@ -1,11 +1,9 @@
 const Response = require("../Util/Response");
-const DirectMessagesManager = require("./DirectMessages");
 
 class MessagesManager {
     constructor(guild) {
         this.guild = guild;
         this.client = guild.client;
-        this.directMessagesManager = new DirectMessagesManager(guild);
     }
 
     isAdmin(user) {
@@ -13,7 +11,6 @@ class MessagesManager {
     }
 
     handle(message) {
-        if (message.channel.type === "dm") return this.directMessagesManager.handle(message);
         if(message.content == this.client.config.prefix || !message.content.startsWith(this.client.config.prefix) || message.content.startsWith(this.client.config.prefix + this.client.config.prefix) || message.channel.type !== "text") return;
         var isAdmin = this.isAdmin(message.author);
 

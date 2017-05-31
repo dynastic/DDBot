@@ -66,9 +66,12 @@ const client = new class extends Discord.Client {
         };
         
         this.modulesManager = new ModuleManager(this, this.commandsManager);
+        this.commandsManager = new CommandsManager(this);
+        this.directMessagesManager = new DirectMessagesManager(this);
         this.cwd = __dirname;
         this.embedFactory = new EmbedFactory(this);
         this.input = new InputUtilities(this);
+        
         this.config = require("./config");
         this.meta = require("../package");
 
