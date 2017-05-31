@@ -30,4 +30,8 @@ module.exports = class EmbedFactory {
   createBadPermsEmbed() {
     return this.createErrorEmbed("Invalid Permissions").setDescription(`You do not have the required permissions to execute that command.`);
   }
+
+  createBadArgsEmbed(command, message) {
+    return this.createErrorEmbed("Bad Arguments").setDescription(`The arguments specified are invalid. ${message ? message : "Run \`" + this.client.config.prefix + "help" + command + "\` for more information."}`);
+  }
 };
