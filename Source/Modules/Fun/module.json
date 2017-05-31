@@ -1,0 +1,9 @@
+{
+    "identifier": "co.dynastic.fun",
+    "main": "fun.js",
+    "commands": {
+        "directory": "Commands",
+        "group": "Fun"
+    },
+    "name": "Dynastic Fun"
+}

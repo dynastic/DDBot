@@ -1,4 +1,4 @@
-const Command = require("../../Util/Command");
+const Command = require("../../../Util/Command");
 
 module.exports = new Command("cointoss", "Toss a coin!", null, ["toss", "coin", "flip", "cointoss", "tosscoin", "coinflip", "flipcoin"],
     (client, message, response) => {

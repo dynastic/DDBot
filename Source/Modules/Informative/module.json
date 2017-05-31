@@ -1,0 +1,9 @@
+{
+    "identifier": "co.dynastic.informative",
+    "main": "informative.js",
+    "commands": {
+        "directory": "Commands",
+        "group": "Informative"
+    },
+    "name": "Dynastic Informative"
+}

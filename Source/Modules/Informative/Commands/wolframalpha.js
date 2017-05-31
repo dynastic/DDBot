@@ -1,5 +1,5 @@
-const Command = require("../../Util/Command");
-const Moderation = require("../../Util/Moderation");
+const Command = require("../../../Util/Command");
+const Moderation = require("../../../Util/Moderation");
 var rp = require('request-promise');
 
 module.exports = new Command("wolframalpha", "Submit your query to Wolfram Alpha", "<query>", ["alpha", "wolfram", "query", "wa"],
