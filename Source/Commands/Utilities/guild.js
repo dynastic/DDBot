@@ -21,18 +21,39 @@ module.exports = new Command("guild", "Guild manager", null, [],
                 if (enabling) {
                     config.disabledModules.splice(config.disabledModules.indexOf(identifier), 1);
                     config.save();
-                    message.guild.manager.properties = config;
                 } else {
                     config.disabledModules.push(identifier);
                     config.save();
-                    message.guild.manager.properties = config;
                 }
-                return response.reply("", response.embedFactory.createSuccessEmbed().setDescription(`Successfully ${enabling ? "enabled" : "disabled"} ${identifier}`));
+                return response.reply("", response.embedFactory.createSuccessEmbed().setDescription(`Successfully ${enabling ? "enabled" : "disabled"} \`${identifier}\``));
             }, commandList: function(config) {
-                var commands = Array.from(message.client.commandsManager.commands.keys());
-                var content = '';
-                commands.forEach(command => content += `\n\`${command} ${config.disabledCommands ? config.disabledCommands.includes(identifier) ? "(Disabled)" : "(Enabled)" : "(Enabled)"}\``);
-                return response.reply("", response.embedFactory.createInformativeEmbed("Available Commands").setDescription(content));
+                var commands = Array.from(message.guild.manager.commandsManager.data.keys());
+                var content = [];
+
+                Object.keys(client.modulesManager.commands).forEach(index => {
+                    var commandName = client.modulesManager.commands[index].command.command;
+                    var moduleDisabled = config.disabledModules ? config.disabledModules.includes(client.modulesManager.commands[index].module) : false;
+                    var commandDisabled = config.disabledCommands ? config.disabledCommands.includes(commandName) : false;
+                    var status = moduleDisabled ? "(Disabled)" : commandDisabled ? "(Disabled)" : "(Enabled)";
+                    content.push(`\`${client.config.prefix}${commandName} [${client.modulesManager.commands[index].module}] ${status}\``);
+                });
+                commands.forEach(command => {
+                    content.push(`\`${client.config.prefix}${command} ${config.disabledCommands ? config.disabledCommands.includes(command) ? "(Disabled)" : "(Enabled)" : "Enabled"}\``);
+                })
+                content.sort();
+                //commands.forEach(command => content += `\n\`${command} ${config.disabledCommands ? config.disabledCommands.includes(command) ? "(Disabled)" : config.disabledModules ? config.disabledModules.includes()}\``);
+                return response.reply("", response.embedFactory.createInformativeEmbed("Available Commands").setDescription(content.join("\n")), true);
+            }, commandToggle: function(config) {
+                var command = args[1].toLowerCase();
+                var enabling = config.disabledCommands ? config.disabledCommands.includes(command) : false;
+                if (enabling) {
+                    config.disabledCommands.splice(config.disabledCommands.indexOf(command), 1);
+                    config.save;
+                } else {
+                    config.disabledCommands.push(command)
+                    config.save();
+                }
+                return response.reply("", response.embedFactory.createSuccessEmbed().setDescription(`Successfully ${enabling ? "enabled" : "disabled"} \`${client.config.prefix}${command}\``));
             }
         }
         
