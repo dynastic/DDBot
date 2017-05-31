@@ -9,8 +9,6 @@ class CommandsManager {
         this.groups = {};
         this.data = new Map();
 
-        this.disabledCommands = disabledCommands || [];
-
         this.guild = guild;
 
         this.loadAll();
@@ -18,7 +16,6 @@ class CommandsManager {
 
     load(groupName, path) {
         var command = require(path);
-        if(this.disabledCommands.includes(command.command)) return;
         if (this.data.has(command.command)) delete require.cache[require.resolve(path)];
         this.data.set(command.command, command);
         if(!this.groups[groupName]) this.groups[groupName] = [];
@@ -48,7 +45,8 @@ class CommandsManager {
     get(text) {
         text = text.toLowerCase();
         return new Promise((resolve, reject) => {
-            if (this.disabledCommands.includes(text)) return resolve();
+            console.log(this.disabledCommands + "|" + text);
+            if (this.guild && this.guild.manager.properties.disabledCommands && this.guild.manager.properties.disabledCommands.includes(text)) return resolve(); 
             if (this.data.has(text)) return resolve(this.data.get(text));
             this.data.forEach(c => {
                 if (c.aliases && c.aliases.includes(text)) return resolve(c);
@@ -68,7 +66,7 @@ class CommandsManager {
 
     getSync(text) {
         text = text.toLowerCase();
-        if (this.disabledCommands.includes(text)) return null;
+        if (this.guild && this.guild.manager.properties.disabledCommands && this.guild.manager.properties.disabledCommands.includes(text)) return null; 
         if (this.data.has(text)) return this.data.get(text);
         this.data.forEach(c => {
             if (c.aliases && c.aliases.includes(text)) return c;

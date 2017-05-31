@@ -50,10 +50,12 @@ module.exports = new Command("guild", "Guild manager", null, [],
                 var enabling = config.disabledCommands ? config.disabledCommands.includes(command) : false;
                 if (enabling) {
                     config.disabledCommands.splice(config.disabledCommands.indexOf(command), 1);
-                    config.save;
-                } else {
-                    config.disabledCommands.push(command)
                     config.save();
+                    message.guild.manager.properties = config;
+                } else {
+                    config.disabledCommands.push(command);
+                    config.save();
+                    message.guild.manager.properties = config;
                 }
                 return response.reply("", response.embedFactory.createSuccessEmbed().setDescription(`Successfully ${enabling ? "enabled" : "disabled"} \`${client.config.prefix}${command}\``));
             }
