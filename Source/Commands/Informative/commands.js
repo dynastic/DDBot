@@ -16,18 +16,7 @@ module.exports = new Command("help", "View a list of commands", "[command]", ["c
                 return response.reply("", embed, true);
             }).catch(e => client.log(e, true));
         } else {
-            var duplicate = function(origin, add) {
-                // Don't do anything if add isn't an object
-                if (!add || typeof add !== 'object') return origin;
-
-                var keys = Object.keys(add);
-                var length = keys.length;
-                for (var i = 0; i < length; i++) {
-                    origin[keys[i]] = add[keys[i]];
-                }
-                return origin;
-            };
-            var groups = duplicate({}, message.guild.manager.commandsManager.groups);
+            var groups = Object.assign({}, message.guild.manager.commandsManager.groups);
             var moduleCommands = client.modulesManager.commandGroups;
             Object.keys(moduleCommands).forEach(identifier => {
                 if(message.guild && message.guild.manager.properties.disabledModules && message.guild.manager.properties.disabledModules.includes(identifier)) return;
