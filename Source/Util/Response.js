@@ -1,3 +1,5 @@
+const Logger = require('./Logger');
+
 module.exports = class Response {
     constructor(message) {
         this.message = message;
@@ -51,7 +53,7 @@ module.exports = class Response {
     }
 
     log(message, error) {
-        error ? console.error(message) : console.log(message);
+        error ? Logger.error(message) : Logger.log(message);
     }
 
 };

@@ -20,7 +20,7 @@ module.exports = new Command("ban", "Ban a user", "<user> [reason]", [],
             member.ban().then(member => {
                 response.reply("", response.embedFactory.createSuccessEmbed("Banned user", message.member).setDescription("The specified user was successfully banned.").addField("User", user, true).addField("Case", `#${newCase.number.toLocaleString()}`, true).addField("Reason", reason || "*None provided*", true));
             }).catch(err => {
-                console.error("Error banning user: " + err);
+                client.log.error("Error banning user: " + err, true);
                 response.reply("", response.embedFactory.createErrorEmbed(null, message.member).setDescription("An unknown error occurred while trying to ban the user."));
             })
         }).catch(err => response.reply("", response.embedFactory.createErrorEmbed(null, message.member).setDescription("An unknown error occurred while trying to ban the user.")));

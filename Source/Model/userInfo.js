@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Logger = require('../Util/Logger');
 
 var UserInfoSchema = new Schema({
     userID: {
@@ -49,7 +50,7 @@ UserInfoSchema.statics.addWarningPoints = function(user, guild, points) {
             guildID: guild.id
         }, { $inc: { "points": points } }, { upsert: true, new: true }, (err, userInfo) => {
             if(err) {
-                console.error("Couldn't increment warning points: " + err);
+                Logger.error("Couldn't increment warning points: " + err);
                 return reject(err);
             }
             if(userInfo.points < 0) {

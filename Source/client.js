@@ -16,6 +16,8 @@ const GuildConfig = require("./Model/guild");
 
 const EmbedFactory = require("./Util/EmbedFactory");
 
+const Logger = require("./Util/Logger");
+
 const defaultGuildConfig = {
     snowflake: "251208047706374154",
     autoRemoveBotMessges: 5,
@@ -31,7 +33,7 @@ const client = new class extends Discord.Client {
     constructor() {
         super();
         process.on('unhandledRejection', rejection => {
-            console.log(rejection);
+            this.log(rejection, true);
         })
         this.fullPermissions = {
             CREATE_INSTANT_INVITE: "Create Instant Invite",
@@ -529,8 +531,8 @@ const client = new class extends Discord.Client {
 
     log(content, error = false) {
         error ?
-            console.error(content) :
-            console.log(content);
+            Logger.error(content) :
+            Logger.log(content);
     }
 };
 
