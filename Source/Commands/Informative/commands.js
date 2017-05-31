@@ -41,7 +41,7 @@ module.exports = new Command("help", "View a list of commands", "[command]", ["c
 
             var embed = response.embedFactory.createInformativeEmbed("Available Commands");
 
-            Object.keys(newGroups).forEach(key => {
+            Object.keys(newGroups).sort().forEach(key => {
                 embed.addField(`${key}:`, newGroups[key], true);
             });
             embed.addField("More information", `Type \`${client.config.prefix}help <command>\` to get more information about a command.`);
