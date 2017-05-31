@@ -8,7 +8,6 @@ class CommandsManager {
 
         this.groups = {};
         this.data = new Map();
-
         this.guild = guild;
 
         this.loadAll();
@@ -74,6 +73,15 @@ class CommandsManager {
         var moduleCommandsKeys = Object.keys(moduleCommands);
         var commandIndex = moduleCommandsKeys.indexOf(text);
         if (commandIndex > -1) {
+            var command = moduleCommands[text];
+            if (!this.guild) return command.command;
+            if (this.guild.manager.properties.disabledModules.indexOf(command.module) > -1) return null;
+            return command.command;
+        }
+        var moduleAliasCommands = this.client.modulesManager.commandAliases;
+        var moduleAliasCommandsKeys = Object.keys(moduleAliasCommands);
+        var aliasCommandIndex = moduleAliasCommandsKeys.indexOf(text);
+        if (aliasCommandIndex > -1) {
             var command = moduleCommands[text];
             if (!this.guild) return command.command;
             if (this.guild.manager.properties.disabledModules.indexOf(command.module) > -1) return null;

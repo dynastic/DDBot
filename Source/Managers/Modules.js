@@ -7,6 +7,7 @@ class ModuleManager {
         this.client = client;
         this.modules = new Map();
         this.commands = {};
+        this.commandAliases = {};
         this.commandGroups = {};
         this.moduleMetas = {};
         this.loadAll();
@@ -50,11 +51,13 @@ class ModuleManager {
                                 if(cmdErr) return this.client.log(cmdErr);
                                 cmdFiles.forEach(cmdFile => {
                                     var cmdResolved = path.parse(nicePath + moduleMeta.commands.directory + path.sep + cmdFile);
-                                    this.commands[cmdResolved.name] = {
+                                    var commandMeta = {
                                         module: moduleMeta.identifier,
                                         group: moduleMeta.commands.group ? moduleMeta.commands.group : moduleMeta.name,
                                         command: require(nicePath + moduleMeta.commands.directory + path.sep + cmdFile)
-                                    }
+                                    };
+                                    this.commands[cmdResolved.name] = commandMeta;
+                                    commandMeta.command.aliases.forEach(alias => this.commandAliases[alias] = commandMeta);
                                     if (!this.commandGroups[this.commands[cmdResolved.name].module]) this.commandGroups[this.commands[cmdResolved.name].module] = [];
                                     this.commandGroups[this.commands[cmdResolved.name].module].push(this.commands[cmdResolved.name].command.command);
                                 })
