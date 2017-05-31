@@ -58,7 +58,17 @@ var getFormattedDisplayName = (user, member) => {
 
 var getFormattedContent = (msg) => {
     var contents = [msg.cleanContent];
-    if(msg.embeds && msg.embeds.length > 0) contents.push(`<message has ${msg.embeds.length} embed${msg.embeds.length == 1 ? "" : "s"}>`);
+    if(msg.embeds && msg.embeds.length > 0){
+        contents.push(`<message has ${msg.embeds.length} embed${msg.embeds.length == 1 ? "" : "s"}>: [`)
+        for(i = 0; i < msg.embeds.length; i++) {
+            var embed = msg.embeds[i];
+            if(embed.title == "Available Commands") { contents.push(`{title: "Help Command", description: "Description withheld to prevent archive spam"}`); continue; }
+            var fields = [];
+            if(embed.fields) embed.fields.forEach(field => fields.push(`{name: "${field.name}", value: "${field.value}"}`));
+            contents.push(`{title: "${embed.title}", description: "${embed.description ? embed.description : "none"}", fields: [${fields}]}${i != msg.embeds.length - 1 ? "," : ""}`);
+        }
+        contents.push(`]`);
+    };
     if(msg.pinned) contents.push(`<message is pinned>`);
     return contents.join(" ");
 }
