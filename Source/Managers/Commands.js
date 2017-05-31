@@ -50,12 +50,17 @@ class CommandsManager {
                 if (c.aliases && c.aliases.includes(text)) return resolve(c);
             });
             var moduleCommands = this.client.modulesManager.commands;
-            var moduleCommandsKeys = Object.keys(moduleCommands);
-            var commandIndex = moduleCommandsKeys.indexOf(text);
-            if (commandIndex > -1) {
+            if (moduleCommands[text]) {
                 var command = moduleCommands[text];
                 if (!this.guild) return resolve(command.command);
-                if (this.guild.manager.properties.disabledModules.indexOf(command.module) > -1) return resolve();
+                if (this.guild.manager.properties.disabledModules[command.module]) return resolve();
+                return resolve(command.command);
+            }
+            var moduleAliasCommands = this.client.modulesManager.commandAliases;
+            if (moduleAliasCommands[text]) {
+                var command = moduleAliasCommands[text];
+                if (!this.guild) return resolve(command.command);
+                if (this.guild.manager.properties.disabledModules[command.module]) return resolve();
                 return resolve(command.command);
             }
             return resolve();
@@ -70,21 +75,17 @@ class CommandsManager {
             if (c.aliases && c.aliases.includes(text)) return c;
         });
         var moduleCommands = this.client.modulesManager.commands;
-        var moduleCommandsKeys = Object.keys(moduleCommands);
-        var commandIndex = moduleCommandsKeys.indexOf(text);
-        if (commandIndex > -1) {
+        if (moduleCommands[text]) {
             var command = moduleCommands[text];
             if (!this.guild) return command.command;
-            if (this.guild.manager.properties.disabledModules.indexOf(command.module) > -1) return null;
+            if (this.guild.manager.properties.disabledModules[command.module]) return null;
             return command.command;
         }
         var moduleAliasCommands = this.client.modulesManager.commandAliases;
-        var moduleAliasCommandsKeys = Object.keys(moduleAliasCommands);
-        var aliasCommandIndex = moduleAliasCommandsKeys.indexOf(text);
-        if (aliasCommandIndex > -1) {
-            var command = moduleCommands[text];
+        if (moduleAliasCommands[text]) {
+            var command = moduleAliasCommands[text];
             if (!this.guild) return command.command;
-            if (this.guild.manager.properties.disabledModules.indexOf(command.module) > -1) return null;
+            if (this.guild.manager.properties.disabledModules[command.module]) return null;
             return command.command;
         }
         return null;
