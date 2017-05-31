@@ -465,7 +465,7 @@ const client = new class extends Discord.Client {
             var member = guild.members.get(this.user.id);
             if (member.hasPermission("MANAGE_ROLES_OR_PERMISSIONS") && this.config.muteRole && this.config.muteRole != "") {
                 var roleNames = guild.roles.array().map(role => role.name);
-                if (roleNames.indexOf(this.config.muteRole) === -1) {
+                if (!roleNames[this.config.muteRole]) {
                     guild.createRole({
                         name: this.config.muteRole,
                         color: "#ff0000",
