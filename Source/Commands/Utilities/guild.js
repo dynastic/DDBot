@@ -21,9 +21,11 @@ module.exports = new Command("guild", "Guild manager", null, [],
                 if (enabling) {
                     config.disabledModules.splice(config.disabledModules.indexOf(identifier), 1);
                     config.save();
+                    message.guild.manager.properties = config;
                 } else {
                     config.disabledModules.push(identifier);
                     config.save();
+                    message.guild.manager.properties = config;
                 }
                 return response.reply("", response.embedFactory.createSuccessEmbed().setDescription(`Successfully ${enabling ? "enabled" : "disabled"} \`${identifier}\``));
             }, commandList: function(config) {
