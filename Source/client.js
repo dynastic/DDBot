@@ -484,7 +484,11 @@ const client = new class extends Discord.Client {
     }
 
     createMutedRole(guild) {
-        return new Promise((resolve, reject) => {
+        new Promise((resolve, reject) => {
+            var names = []
+            guild.roles.forEach(r => names.push(r.name));
+            names.indexOf(this.config.muteRole) > -1 ? reject() : resolve();
+        }).then(() => {
             var member = guild.members.get(this.user.id);
             if (member.hasPermission("MANAGE_ROLES_OR_PERMISSIONS") && this.config.muteRole && this.config.muteRole != "") {
                 var roleNames = guild.roles.array().map(role => role.name);
@@ -499,19 +503,15 @@ const client = new class extends Discord.Client {
                         guild.channels.forEach(channel => {
                             this.setMutedPermsOnChannel(channel, mutedRole);
                         });
-                        resolve(guild);
                     }).catch(e => this.log(e, true));
                 } else {
                     var mutedRole = this.getMuteRoleForGuild(guild);
                     guild.channels.forEach(channel => {
                         this.setMutedPermsOnChannel(channel, mutedRole);
                     });
-                    resolve(guild);
                 }
-            } else {
-                resolve(guild);
             }
-        });
+        }).catch(() => 0);
     }
 
     getGuildConfig(guild) {
