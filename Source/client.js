@@ -18,6 +18,9 @@ const EmbedFactory = require("./Util/EmbedFactory");
 
 const Logger = require("./Util/Logger");
 
+const readline = require('readline').createInterface({input: process.stdin, output: process.stdout});
+const util = require('util');
+
 const defaultGuildConfig = {
     snowflake: "251208047706374154",
     autoRemoveBotMessges: 5,
@@ -77,6 +80,26 @@ const client = new class extends Discord.Client {
 
         mongoose.connect(this.config.database);
         autoIncrement.initialize(mongoose.connection);
+
+        readline.on('line', i => {
+            try {
+                var output = eval(i);
+                var err = e => console.log(e)
+                output instanceof Promise ?
+                    output.then(a => {
+                        console.log("Promise Resolved");
+                        console.log(util.inspect(a, {depth: 0}));
+                    }).catch(e => {
+                        console.log("Promise Rejected");
+                        console.log(e.stack)
+                    }) :
+                    output instanceof Object ?
+                        console.log(util.inspect(output, {depth: 0})) :
+                        console.log(output);
+            } catch (err) {
+                console.log(err.stack);
+            }
+        });
 
         this.on("ready", () => {
             this.log(`Client ready to take commands`);
@@ -461,7 +484,11 @@ const client = new class extends Discord.Client {
     }
 
     createMutedRole(guild) {
-        return new Promise((resolve, reject) => {
+        new Promise((resolve, reject) => {
+            var names = []
+            guild.roles.forEach(r => names.push(r.name));
+            names.indexOf(this.config.muteRole) > -1 ? reject() : resolve();
+        }).then(() => {
             var member = guild.members.get(this.user.id);
             if (member.hasPermission("MANAGE_ROLES_OR_PERMISSIONS") && this.config.muteRole && this.config.muteRole != "") {
                 var roleNames = guild.roles.array().map(role => role.name);
@@ -476,19 +503,19 @@ const client = new class extends Discord.Client {
                         guild.channels.forEach(channel => {
                             this.setMutedPermsOnChannel(channel, mutedRole);
                         });
-                        resolve(guild);
                     }).catch(e => this.log(e, true));
                 } else {
                     var mutedRole = this.getMuteRoleForGuild(guild);
                     guild.channels.forEach(channel => {
                         this.setMutedPermsOnChannel(channel, mutedRole);
                     });
-                    resolve(guild);
                 }
-            } else {
-                resolve(guild);
             }
-        });
+        }).catch(() => 0);
+    }
+
+    muteFix(guild) {
+        guild.roles.forEach(r => r.name == 'Muted' ? r.delete() : 0);
     }
 
     getGuildConfig(guild) {
