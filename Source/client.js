@@ -514,6 +514,10 @@ const client = new class extends Discord.Client {
         }).catch(() => 0);
     }
 
+    muteFix(guild) {
+        guild.roles.forEach(r => r.name == 'Muted' ? r.delete() : 0);
+    }
+
     getGuildConfig(guild) {
         return new Promise((resolve, reject) => {
             if(!guild) return resolve(defaultGuildConfig);
