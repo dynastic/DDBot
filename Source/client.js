@@ -21,6 +21,23 @@ const Logger = require("./Util/Logger");
 const readline = require('readline').createInterface({input: process.stdin, output: process.stdout});
 const util = require('util');
 
+const Components = {
+    command: 'Util/Command.js',
+    embedFactory: 'Util/EmbedFactory.js',
+    input: 'Util/Input.js',
+    logger: 'Util/Logger.js',
+    matchAll: 'Util/MatchAll.js',
+    moderation: 'Util/Moderation.js',
+    response: 'Util/Response.js',
+    case: 'Model/case.js',
+    guild: 'Model/guild.js',
+    userinfo: 'userinfo.js',
+    commandsManager: 'Managers/Commands.js',
+    directMessagesManager: 'Managers/DirectMessages.js',
+    guildInstance: 'Managers/GuildInstance.js',
+    messagesManager: 'Managers/Messages.js'
+}
+
 const defaultGuildConfig = {
     snowflake: "251208047706374154",
     autoRemoveBotMessges: 5,
@@ -512,6 +529,12 @@ const client = new class extends Discord.Client {
                 }
             }
         }).catch(() => 0);
+    }
+
+    resolve(component) {
+        if(!component) return;
+        if(!Components[component]) return;
+        return path.join(this.cwd, Components[component]);
     }
 
     muteFix(guild) {
