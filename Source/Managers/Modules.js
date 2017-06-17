@@ -44,6 +44,7 @@ class ModuleManager {
                             this.load(moduleMeta.identifier, nicePath + moduleMeta.main).catch(e => this.client.log(e, true));
                             this.moduleMetas[moduleMeta.identifier] = moduleMeta;
                         })
+                        if(!moduleMeta.commands) return;
                         fs.stat(nicePath + moduleMeta.commands.directory, (e, s) => {
                             if(e) return;
                             if(!s.isDirectory()) return this.client.log("Commands field must be a folder in module " + folder.name);
