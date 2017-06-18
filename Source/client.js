@@ -26,7 +26,6 @@ const Components = {
     embedFactory: 'Util/EmbedFactory.js',
     input: 'Util/Input.js',
     logger: 'Util/Logger.js',
-    matchAll: 'Util/MatchAll.js',
     moderation: 'Util/Moderation.js',
     response: 'Util/Response.js',
     case: 'Model/case.js',
