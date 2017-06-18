@@ -8,7 +8,7 @@ module.exports = class EmbedFactory {
   createGeneralEmbed(title, color, authorizationMember) {
     var authorizedText = authorizationMember ? `This action was authorized by @${authorizationMember.user.username}#${authorizationMember.user.discriminator} · ` : ""
     var icon = authorizationMember ? authorizationMember.user.avatarURL : null;
-    return new Discord.RichEmbed({ "title": title, "color": color, "footer": { "icon_url": icon, "text": `${authorizedText}${this.client.config.botName}` } });
+    return new Discord.RichEmbed({ title, color, "footer": { "icon_url": icon, "text": `${authorizedText}${this.client.config.botName}` } });
   }
 
   createErrorEmbed(customTitle, authorizationMember) {
