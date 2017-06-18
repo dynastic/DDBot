@@ -13,7 +13,9 @@ class EvalShortcut {
                     if(!c) return;
                     var args = message.content.split(" ");
                     args[0] = args[0].slice(this.config.prefix.length);
-                    c.execute(this.client, message, new this.response(message), args);
+                    args.unshift(`${client.config.prefix}eval`);
+                    message.content = args.join(" ");
+                    message.channel.type == 'dm' ? client.directMessagesManager.handle(message) : message.guild.manager.messagesManager.handle(message);
                 });
             }
         }
