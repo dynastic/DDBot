@@ -32,7 +32,7 @@ class MessagesManager {
                 return response.reply("", this.client.embedFactory.createUnknownCommandEmbed());
             }
 
-            if(this.client.config.isDebugMode || false) this.client.log(`User ${message.author.username}#${message.author.discriminator} tried to run command with message: ${message.content}`, true);
+            if(this.client.config.isDebugMode || false) this.client.log(`User ${message.author.username}#${message.author.discriminator} tried to run command with message: ${message.content}`);
             
             if (!command.userCanAccess(message.member)) {
                 doSelfDestruct();
