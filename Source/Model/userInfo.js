@@ -48,7 +48,7 @@ UserInfoSchema.statics.addWarningPoints = function(user, guild, points) {
         this.findOneAndUpdate({
             userID: user.id,
             guildID: guild.id
-        }, { $inc: { "points": points } }, { upsert: true, new: true }, (err, userInfo) => {
+        }, { $inc: { points } }, { upsert: true, new: true }, (err, userInfo) => {
             if(err) {
                 Logger.error("Couldn't increment warning points: " + err);
                 return reject(err);
