@@ -40,11 +40,11 @@ CaseSchema.statics.createCase = function(modUser, type, user, guild, reason = nu
     return new Promise((resolve, reject) => {
         var newCase = this({
             modID: modUser.id,
-            type: type,
+            type,
             userID: user.id,
             guildID: guild.id,
-            reason: reason,
-            points: points,
+            reason,
+            points,
             date: Date()
         });
         newCase.save(function(err) {

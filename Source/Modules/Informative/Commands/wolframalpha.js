@@ -8,7 +8,7 @@ module.exports = new Command("wolframalpha", "Submit your query to Wolfram Alpha
         var query = args.join(" ");
         var headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.1 Safari/603.1.30", "Origin": "https://products.wolframalpha.com", "Referer": "https://products.wolframalpha.com/api/explorer/", "Accept": "*/*"};
         response.reply("", response.embedFactory.createInformativeEmbed("Retrieving result...").setDescription("Contacting Wolfram Alpha..."), true).then(postedMessage => {
-            rp({url: 'https://www.wolframalpha.com/input/apiExplorer.jsp?input=' + encodeURIComponent(query) + '&format=image,plaintext&output=JSON&type=full&width=200', headers: headers}).then(body => {
+            rp({url: 'https://www.wolframalpha.com/input/apiExplorer.jsp?input=' + encodeURIComponent(query) + '&format=image,plaintext&output=JSON&type=full&width=200', headers}).then(body => {
                 var result = JSON.parse(body).queryresult;
                 var url = `http://www.wolframalpha.com/input/?i=${encodeURIComponent(query)}`;
                 if(!result.success) {
