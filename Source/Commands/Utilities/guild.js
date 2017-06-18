@@ -8,12 +8,12 @@ const GuildConfig = require("../../Model/guild");
 module.exports = new Command("guild", "Guild manager", null, [],
     (client, message, response, args) => {
         var operations = {
-            moduleList: function(config) {
+            moduleList(config) {
                 var modules = Array.from(message.client.modulesManager.modules.keys());
                 var content = '';
                 modules.forEach(identifier => content += `\n\`${identifier}  ${config.disabledModules ? config.disabledModules.includes(identifier) ? "(Disabled)" : "(Enabled)" : "(Enabled)"}\``);
                 return response.reply("", response.embedFactory.createInformativeEmbed("Available Modules").setDescription(content));
-            }, moduleToggle: function(config) {
+            }, moduleToggle(config) {
                 if(!args[1]) return response.reply("", response.embedFactory.createErrorEmbed().setDescription(`Usage: \`${client.config.prefx}guild moduleToggle <module ID>\``));
                 var modIdentifier = args[1].toLowerCase();
                 var modules = Array.from(message.client.modulesManager.modules.keys());
@@ -34,7 +34,7 @@ module.exports = new Command("guild", "Guild manager", null, [],
                 config.save();
                 message.guild.manager.properties = config;
                 return response.reply("", response.embedFactory.createSuccessEmbed().setTitle("Output").setDescription(content));
-            }, commandList: function(config) {
+            }, commandList(config) {
                 var commands = Array.from(message.guild.manager.commandsManager.data.keys());
                 var content = [];
 
@@ -53,7 +53,7 @@ module.exports = new Command("guild", "Guild manager", null, [],
                 if(contentPrepped.length > 2048) return response.reply("", response.embedFactory.createErrorEmbed().setDescription('This guild has too many commands! Contact the bot admins for a list of commands.'));
                 //commands.forEach(command => content += `\n\`${command} ${config.disabledCommands ? config.disabledCommands.includes(command) ? "(Disabled)" : config.disabledModules ? config.disabledModules.includes()}\``);
                 return response.reply("", response.embedFactory.createInformativeEmbed("Available Commands").setDescription(contentPrepped), true);
-            }, commandToggle: function(config) {
+            }, commandToggle(config) {
                 if(!args[1]) return response.reply("", response.embedFactory.createErrorEmbed().setDescription(`Usage: \`${client.config.prefix}commandToggle <command>\``))
                 var command = args[1].toLowerCase().trim();
                 if (command == "guild") return response.reply("", response.embedFactory.createErrorEmbed().setDescription(`You cannot disable the guild command, how would you re-enable it?`));
