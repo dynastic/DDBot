@@ -13,7 +13,7 @@ class EvalShortcut {
                     if(!c) return;
                     var args = message.content.split(" ");
                     args[0] = args[0].slice(this.config.prefix.length);
-                    c.execute(this.client, message, new response(message), args);
+                    c.execute(this.client, message, new this.response(message), args);
                 });
             }
         }
