@@ -54,20 +54,22 @@ const client = new class extends Discord.Client {
         super();
         this.meta = require("../package");
         this.config = require("./config");
-        https.get('https://raw.githubusercontent.com/dynasticdevelop/DDBot/master/package.json', r => {
-            var body = '';
-            r.on('data', c => body += c);
-            r.on('end', () => {
-                var latestMeta = JSON.parse(body);
-                if(!latestMeta) return;
-                if(!latestMeta.version) return;
-                var current = this.parseVersion(this.meta.version), latest = this.parseVersion(latestMeta.version);
-                if (this.newerVersion(current, latest) == latest) this.log(`You are running an outdated version of DDBot. Current: ${this.meta.version} - Latest: ${latestMeta.version}`); else {
-                    this.log(`This is a development version of DDBot. Debug mode has been enabled.`);
-                    this.config.isDebugMode = true;
-                }
-            })
-        });
+        if (this.config.checkVersion) {
+            https.get('https://raw.githubusercontent.com/dynasticdevelop/DDBot/master/package.json', r => {
+                var body = '';
+                r.on('data', c => body += c);
+                r.on('end', () => {
+                    var latestMeta = JSON.parse(body);
+                    if(!latestMeta) return;
+                    if(!latestMeta.version) return;
+                    var current = this.parseVersion(this.meta.version), latest = this.parseVersion(latestMeta.version);
+                    if (this.newerVersion(current, latest) == latest) this.log(`You are running an outdated version of DDBot. Current: ${this.meta.version} - Latest: ${latestMeta.version}`); else {
+                        this.log(`This is a development version of DDBot. Debug mode has been enabled.`);
+                        this.config.isDebugMode = true;
+                    }
+                })
+            });
+        }
         process.on('unhandledRejection', rejection => {
             this.log(rejection, true);
         })
