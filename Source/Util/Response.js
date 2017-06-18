@@ -21,7 +21,7 @@ module.exports = class Response {
         var checkAutoRemove = (msg) => { if(selfDestruct != null) msg.delete(selfDestruct * 1000).catch(e => "Failed to delete message: " + e.name) };
         embed = this.modifyEmbedForSelfDestructTime(embed, selfDestruct);
         return embed ?
-            message.edit(content, { embed: embed }).then(msg => { checkAutoRemove(msg); return msg; }).catch(e => log(e, true)) :
+            message.edit(content, { embed }).then(msg => { checkAutoRemove(msg); return msg; }).catch(e => log(e, true)) :
             message.edit(content).then(msg => { checkAutoRemove(msg); return msg; }).catch(e => log(e, true));
     }
 

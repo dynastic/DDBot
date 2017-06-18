@@ -38,11 +38,11 @@ var GuildSchema = new Schema({
     }]
 })
 
-GuildSchema.statics.createConfig = function(id, name) {
+GuildSchema.statics.createConfig = function(snowflake, name) {
     return new Promise((resolve, reject) => {
         var newConfig = this({
-            snowflake: id,
-            name: name
+            snowflake,
+            name
         })
         
         newConfig.save(function(err) {
