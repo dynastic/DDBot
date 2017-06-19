@@ -22,12 +22,11 @@ class CommandsManager {
   }
 
   loadAll () {
-    var client = this.client
     fs.walk(commands).on('data', item => {
       var file = path.parse(item.path)
       if (!file.ext || file.ext !== '.js') return
       var dirPath = path.dirname(item.path)
-      var groupName = dirPath == commands ? 'Other' : path.basename(dirPath)
+      var groupName = dirPath === commands ? 'Other' : path.basename(dirPath)
       this.load(groupName, `${file.dir}${path.sep}${file.base}`)
     })
     return this
@@ -35,10 +34,18 @@ class CommandsManager {
 
   reload (input) {
     return new Promise((resolve, reject) => {
-      if (!this.data.has(input)) return reject('Invalid Command')
+      if (!this.data.has(input)) return reject(new Error('Invalid Command'))
       var command = this.data.get(input)
       this.load(input, command.path)
     })
+  }
+
+  retrieveCommand (index, text) {
+    if (index[text]) {
+      var command = index[text]
+      if (this.guild ? this.guild.manager.properties.disabledModules[command.module] : false) return
+      return command.command
+    }
   }
 
   get (text) {
@@ -49,21 +56,7 @@ class CommandsManager {
       this.data.forEach(c => {
         if (c.aliases && c.aliases.includes(text)) return resolve(c)
       })
-      var moduleCommands = this.client.modulesManager.commands
-      if (moduleCommands[text]) {
-        var command = moduleCommands[text]
-        if (!this.guild) return resolve(command.command)
-        if (this.guild.manager.properties.disabledModules[command.module]) return resolve()
-        return resolve(command.command)
-      }
-      var moduleAliasCommands = this.client.modulesManager.commandAliases
-      if (moduleAliasCommands[text]) {
-        var command = moduleAliasCommands[text]
-        if (!this.guild) return resolve(command.command)
-        if (this.guild.manager.properties.disabledModules[command.module]) return resolve()
-        return resolve(command.command)
-      }
-      return resolve()
+      resolve(this.retrieveCommand(this.client.modulesManager.commands, text) || this.retrieveCommand(this.client.modulesManager.commandAliases, text))
     })
   }
 
@@ -74,21 +67,7 @@ class CommandsManager {
     this.data.forEach(c => {
       if (c.aliases && c.aliases.includes(text)) return c
     })
-    var moduleCommands = this.client.modulesManager.commands
-    if (moduleCommands[text]) {
-      var command = moduleCommands[text]
-      if (!this.guild) return command.command
-      if (this.guild.manager.properties.disabledModules[command.module]) return null
-      return command.command
-    }
-    var moduleAliasCommands = this.client.modulesManager.commandAliases
-    if (moduleAliasCommands[text]) {
-      var command = moduleAliasCommands[text]
-      if (!this.guild) return command.command
-      if (this.guild.manager.properties.disabledModules[command.module]) return null
-      return command.command
-    }
-    return null
+    return (this.retrieveCommand(this.client.modulesManager.commands, text) || this.retrieveCommand(this.client.modulesManager.commandAliases, text))
   }
 }
 
