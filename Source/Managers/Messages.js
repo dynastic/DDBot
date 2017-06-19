@@ -11,9 +11,7 @@ class MessagesManager {
   }
 
   handle (message) {
-    if (message.content == this.client.config.prefix || !message.content.startsWith(this.client.config.prefix) || message.content.startsWith(this.client.config.prefix + this.client.config.prefix) || message.channel.type !== 'text') return
-    var isAdmin = this.isAdmin(message.author)
-
+    if (message.content === this.client.config.prefix || !message.content.startsWith(this.client.config.prefix) || message.content.startsWith(this.client.config.prefix + this.client.config.prefix) || message.channel.type !== 'text') return
     var args = message.content.split(' ')
     var cstr = args[0].slice(this.client.config.prefix.length)
     args.shift()
@@ -23,7 +21,7 @@ class MessagesManager {
     this.guild.manager.commandsManager.get(cstr).then(command => {
       var selfDestruct = response.getMessageSelfDestructTime(false)
       function doSelfDestruct () {
-        if (selfDestruct != null) message.delete(selfDestruct * 1000)
+        if (selfDestruct !== null) message.delete(selfDestruct * 1000)
       }
 
       if (!command) {

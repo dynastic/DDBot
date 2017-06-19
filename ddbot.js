@@ -3,11 +3,10 @@ module.exports = {
    * Application configuration section
    * http://pm2.keymetrics.io/docs/usage/application-declaration/
    */
-  apps : [
+  apps: [
     {
-      name      : "DDBot",
-      script    : "Source/client.js",
+      name: 'DDBot',
+      script: 'Source/client.js'
     }
   ]
 }
-

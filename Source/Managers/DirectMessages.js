@@ -11,11 +11,11 @@ class DirectMessagesManager {
   }
 
   handle (message) {
-    if (message.content == this.client.config.prefix || !message.content.startsWith(this.client.config.prefix) || message.content.startsWith(this.client.config.prefix + this.client.config.prefix) || message.channel.type !== 'dm') return
-    var admin = this.client.config.admins.includes(message.author), args = message.content.split(' '), cstr = args[0].slice(this.client.config.prefix.length)
+    if (message.content === this.client.config.prefix || !message.content.startsWith(this.client.config.prefix) || message.content.startsWith(this.client.config.prefix + this.client.config.prefix) || message.channel.type !== 'dm') return
+    var args = message.content.split(' '), cstr = args[0].slice(this.client.config.prefix.length)
     args.shift()
     var response = new Response(message)
-    var command = this.client.commandsManager.get(cstr).then(command => {
+    this.client.commandsManager.get(cstr).then(command => {
       if (!command) {
         if (!cstr.length) return
         return response.reply('', this.embedFactory.createUnknownCommandEmbed())
@@ -26,7 +26,7 @@ class DirectMessagesManager {
       if (!command.userCanAccess(message.author, true)) {
         return response.reply('', this.embedFactory.createBadPermsEmbed())
       }
-      var res = command.execute(this.client, message, response, args)
+      command.execute(this.client, message, response, args)
     })
   }
 }

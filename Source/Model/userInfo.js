@@ -54,7 +54,7 @@ UserInfoSchema.statics.addWarningPoints = function (user, guild, points) {
         return reject(err)
       }
       if (userInfo.points < 0) {
-                // Get back up to zero
+        // Get back up to zero
         return this.addWarningPoints(user, guild, Math.abs(userInfo.points)).then(resolve).catch(reject)
       }
       resolve(userInfo)

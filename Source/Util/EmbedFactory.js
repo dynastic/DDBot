@@ -32,6 +32,6 @@ module.exports = class EmbedFactory {
   }
 
   createBadArgsEmbed (command, message) {
-    return this.createErrorEmbed('Bad Arguments').setDescription(`The arguments specified are invalid. ${message || 'Run \`' + this.client.config.prefix + 'help' + command + '\` for more information.'}`)
+    return this.createErrorEmbed('Bad Arguments').setDescription(`The arguments specified are invalid. ${message || 'Run `' + this.client.config.prefix + 'help' + command + '` for more information.'}`)
   }
 }

@@ -21,7 +21,7 @@ class Command {
     var isAdmin = member.client.config.admins.includes(member.id)
     if (this.requiresAdmin && !isAdmin) return false
     if (dm) return this.requiresAdmin ? isAdmin : true
-    if (member) return (member.hasPermission(this.requiredPermissions) || member.guild.manager.properties.delegate == member.id) || isAdmin
+    if (member) return (member.hasPermission(this.requiredPermissions) || member.guild.manager.properties.delegate === member.id) || isAdmin
     return false
   }
 }

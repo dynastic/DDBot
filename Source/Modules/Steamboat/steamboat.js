@@ -1,6 +1,5 @@
 const JsDiff = require('diff')
 const fs = require('fs-extra-promise')
-const path = require('path')
 
 class Steamboat {
   constructor (client) {
@@ -49,7 +48,7 @@ class Steamboat {
         })
       },
       messageDelete: (message) => {
-        if (message.author.id == this.client.user.id || message.author.bot) return
+        if (message.author.id === this.client.user.id || message.author.bot) return
         if (message.content !== this.client.config.prefix && message.content.startsWith(this.client.config.prefix) && !message.content.startsWith(this.client.config.prefix + this.client.config.prefix)) return
         this.initialize(message.guild).then(modLog => {
           modLog.send(`:wastebasket: ${message.author.tag} (\`${message.author.id}\`) message deleted in **#${message.channel.name}**:\n${message.cleanContent}`)
@@ -57,7 +56,7 @@ class Steamboat {
       },
       messageDeleteBulk: (messages) => {
         messages.array().forEach(m => {
-          if (m.author.id == this.client.user.id || m.author.bot) return
+          if (m.author.id === this.client.user.id || m.author.bot) return
           if (m.content !== this.client.config.prefix && m.content.startsWith(this.client.config.prefix) && !m.content.startsWith(this.client.config.prefix + this.client.config.prefix)) return
           this.initialize(m.guild).then(modLog => {
             modLog.send(`:wastebasket: ${m.author.tag} (\`${m.author.id}\`) message deleted in **#${m.channel.name}**:\n${m.cleanContent}`)
@@ -65,7 +64,7 @@ class Steamboat {
         })
       },
       messageUpdate: (oldM, newM) => {
-        if (newM.author.id == this.client.user.id || newM.author.bot) return
+        if (newM.author.id === this.client.user.id || newM.author.bot) return
         this.initialize(newM.guild).then(modLog => {
           var markdownDiff = ''
           JsDiff.diffChars(oldM.content, newM.content).forEach(diff => {
@@ -91,7 +90,7 @@ class Steamboat {
         }).catch(e => this.client.log(e, true))
       },
       roleUpdate: (oldR, newR) => {
-        this.initialize(role.guild).then(modLog => {
+        this.initialize(newR.guild).then(modLog => {
           modLog.send(`:rotating_light: ***ROLE UPDATED*** ${newR.name} \`{oldPermissions: ${oldR.permissions}, newPermissions: ${newR.permissions}}\``)
         }).catch(e => this.client.log(e, true))
       }
@@ -100,9 +99,9 @@ class Steamboat {
 
   initialize (guild) {
     return new Promise((resolve, reject) => {
-      if (!this.config.guilds[guild.id]) return reject('No guild in config for ID ' + guild.id)
+      if (!this.config.guilds[guild.id]) return reject(new Error(`No guild in config for ID ${guild.id}`))
       var channel = guild.channels.get(this.config.guilds[guild.id].channel)
-      if (!channel) return reject('No mod-log channel for guild ID ' + guild.id)
+      if (!channel) return reject(new Error(`No mod-log channel for guild ID ${guild.id}`))
       resolve(channel)
     })
   }

@@ -15,11 +15,11 @@ class ModuleManager {
 
   load (name, path) {
     return new Promise((resolve, reject) => {
-      var newModule = require(path)
+      var Module = require(path)
       if (this.modules.has(name)) {
-        return reject('A module with the identifier ' + name + ' already exists.')
+        return reject(new Error('A module with the identifier ' + name + ' already exists.'))
       }
-      newModule = new newModule(this.client)
+      var newModule = new Module(this.client)
       this.modules.set(name, newModule)
       resolve(newModule)
     })
@@ -58,7 +58,7 @@ class ModuleManager {
                     command: require(nicePath + moduleMeta.commands.directory + path.sep + cmdFile)
                   }
                   this.commands[cmdResolved.name] = commandMeta
-                  commandMeta.command.aliases.forEach(alias => this.commandAliases[alias] = commandMeta)
+                  commandMeta.command.aliases.forEach(alias => { this.commandAliases[alias] = commandMeta })
                   if (!this.commandGroups[this.commands[cmdResolved.name].module]) this.commandGroups[this.commands[cmdResolved.name].module] = []
                   this.commandGroups[this.commands[cmdResolved.name].module].push(this.commands[cmdResolved.name].command.command)
                 })
@@ -72,7 +72,7 @@ class ModuleManager {
 
   reload (input) {
     return new Promise((resolve, reject) => {
-      if (!this.data.has(input)) return reject('Invalid Command')
+      if (!this.data.has(input)) return reject(new Error('Invalid Command'))
       this.load(input, this.data.get(input).path)
       resolve()
     })
@@ -82,7 +82,7 @@ class ModuleManager {
     input = input.toLowerCase()
     return new Promise((resolve, reject) => {
       if (this.data.has(input)) return resolve(this.data.get(input))
-      reject()
+      reject(new Error('Module does not exist'))
     })
   }
 }
