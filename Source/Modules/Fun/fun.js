@@ -1,8 +1,8 @@
 class Fun {
-    constructor(client) {
-        this.client = client;
-        this.meta = require('./module');
-    }
+  constructor (client) {
+    this.client = client
+    this.meta = require('./module')
+  }
 }
 
-module.exports = Fun;
+module.exports = Fun
