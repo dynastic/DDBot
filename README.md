@@ -2,6 +2,8 @@
 
 # DDBot
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/468abe6cdd264bf7938087bef66d473a)](https://www.codacy.com/app/ericjrabil/DDBot?utm_source=github.com&utm_medium=referral&utm_content=dynasticdevelop/DDBot&utm_campaign=badger)
+
 A Discord bot developed by the Dynastic Development Team.
 
 **This project is very much a work-in-progress and contains a lot of shitty code. Contributions are appreciated!**
