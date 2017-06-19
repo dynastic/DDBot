@@ -54,6 +54,10 @@ const client = new class extends Discord.Client {
         super();
         this.meta = require("../package");
         this.config = require("./config");
+        if (typeof this.config.checkVersion === 'undefined') {
+            this.config.checkVersion = true;
+            this.saveConfig();
+        }
         if (this.config.checkVersion) {
             https.get('https://raw.githubusercontent.com/dynasticdevelop/DDBot/master/package.json', r => {
                 var body = '';
@@ -626,7 +630,7 @@ const client = new class extends Discord.Client {
     }
 
     saveConfig() {
-        fs.writeFile(`${__dirname}/config.json`, JSON.stringify(this.config, null, 4));
+        fs.writeFile(`${__dirname}/config.json`, JSON.stringify(this.config, null, 4), undefined, e => { e ? this.log(e, true) : 0});
     }
 
     log(content, error = false) {
