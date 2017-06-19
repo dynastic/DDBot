@@ -5,6 +5,7 @@
     "status": "!help | being helpful!",
     "muteRole": "Muted",
     "isDebugMode": false,
+    "checkVersion": true,
     "database": "mongodb://localhost/ddbot",
     "admins": [
         "207194778906001408",
