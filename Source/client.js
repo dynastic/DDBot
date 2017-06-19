@@ -567,7 +567,7 @@ const client = new class extends Discord.Client {
           })
         }
       }
-    }).catch()
+    }).catch(e => e)
   }
 
   resolve (component) {
@@ -618,7 +618,7 @@ const client = new class extends Discord.Client {
   }
 
   saveConfig () {
-    fs.writeFile(`${__dirname}/config.json`, JSON.stringify(this.config, null, 4), undefined, e => { e ? this.log(e, true) : 0 })
+    fs.writeFile(`${__dirname}/config.json`, JSON.stringify(this.config, null, 4), undefined, e => { if (e) this.log(e, true) })
   }
 
   log (content, error = false) {
