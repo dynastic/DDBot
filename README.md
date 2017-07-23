@@ -41,7 +41,7 @@ When deploying, it is recommended you use a daemon to keep the server alive. We 
 ### Deploying with pm2
 
 1. Get [pm2](http://pm2.keymetrics.io) installed **globally** by running `npm i -g pm2`.
-2. Once pm2 is installed, starting DDBot is as simple as running `pm2 start app.js --name=DDBot`.
+2. Once pm2 is installed, starting DDBot is as simple as running `pm2 start Source/client.js --name=DDBot`.
 You can manage your pm2 instances using `pm2 show DDBot`.
 
 You can instruct pm2 to save the currently running pm2 instances and start them at boot with `pm2 startup`.
