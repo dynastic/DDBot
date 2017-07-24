@@ -64,10 +64,12 @@ class Steamboat {
         })
       },
       messageUpdate: (oldM, newM) => {
-        if (newM.author.id === this.client.user.id || newM.author.bot) return
+        if (newM.author.id === this.client.user.id || newM.author.bot || oldM.content == newM.content) return;
+        var oldContent = oldM.content.split("@").join("@​");
+        var newContent = newM.content.split("@").join("@​");
         this.initialize(newM.guild).then(modLog => {
           var markdownDiff = ''
-          JsDiff.diffChars(oldM.content, newM.content).forEach(diff => {
+          JsDiff.diffChars(oldContent, newContent).forEach(diff => {
             if (diff.added) {
               markdownDiff += '**' + diff.value + '**'
             } else if (diff.removed) {
