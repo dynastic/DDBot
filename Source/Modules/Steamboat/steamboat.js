@@ -106,7 +106,7 @@ class Steamboat {
           this.saveConfig();
       }
       var channel = guild.channels.get(this.config.guilds[guild.id].channel)
-      if (!channel) return reject(new Error(`No mod-log channel for guild ID ${guild.id}`))
+      if (!channel) return reject(new Error(`No mod-log channel for guild ID ${guild.id} (steamboat will be disabled for this server, run the modlog command on that guild to fix it).`))
       resolve(channel)
     })
   }
