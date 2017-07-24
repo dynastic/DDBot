@@ -101,7 +101,10 @@ class Steamboat {
 
   initialize (guild) {
     return new Promise((resolve, reject) => {
-      if (!this.config.guilds[guild.id]) return reject(new Error(`No guild in config for ID ${guild.id}`))
+      if (!this.config.guilds[guild.id]) {
+          this.config.guilds[guild.id] = {};
+          this.saveConfig();
+      }
       var channel = guild.channels.get(this.config.guilds[guild.id].channel)
       if (!channel) return reject(new Error(`No mod-log channel for guild ID ${guild.id}`))
       resolve(channel)
