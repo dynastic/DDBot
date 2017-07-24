@@ -65,8 +65,8 @@ class Steamboat {
       },
       messageUpdate: (oldM, newM) => {
         if (newM.author.id === this.client.user.id || newM.author.bot || oldM.content == newM.content) return;
-        var oldContent = oldM.content.split("@").join("@​");
-        var newContent = newM.content.split("@").join("@​");
+        var oldContent = oldM.cleanContent.split("@").join("@​");
+        var newContent = newM.cleanContent.split("@").join("@​");
         this.initialize(newM.guild).then(modLog => {
           var markdownDiff = ''
           JsDiff.diffChars(oldContent, newContent).forEach(diff => {
