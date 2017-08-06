@@ -1,3 +1,15 @@
+Effective `August 06 2017`, DDBot development has ceased and will no longer receive updates* for the foreseeable future, barring any unexpected events. DDBot will be replaced by [Cast](https://github.com/CastProject/Cast) which aims to fix a lot of the issues encountered with DDBot and make an overall easier to use API for plugin developers.
+
+> Even though DDBot has been deprecated, **you are still welcome to use it.** It is in a great state and is *mostly* production ready.
+
+While you are in no way obligated to switch to Cast when DDBot is fully replaced by Cast, it is highly recommended so that you can continue receiving important bug fixes and improvements to the bot.
+
+Sincerely, DDBot Team
+
+> \* This excludes fixes for severe security issues, which will be resolved and released on a case-by-case basis.
+
+---
+
 ![Dynastic Development](https://github.com/dynasticdevelop/assets/raw/master/images/brand.png)
 
 # DDBot
