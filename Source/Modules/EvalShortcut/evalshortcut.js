@@ -8,7 +8,7 @@ class EvalShortcut {
     this.config = require('./config');
     this.events = {
       message: (message) => {
-        if (message.content === this.config.prefix || !message.content.startsWith(this.config.prefix) || message.content.startsWith(this.config.prefix + this.config.prefix) || !this.client.config.admins.includes(message.member.id)) return;
+        if (message.content === this.config.prefix || !message.content.startsWith(this.config.prefix) || message.content.startsWith(this.config.prefix + this.config.prefix) || !this.client.config.admins.includes(message.user.id)) return;
         this.client.commandsManager.get('eval').then(c => {
           if (!c) return;
           var args = message.content.split(' ');
