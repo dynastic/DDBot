@@ -1,3 +1,7 @@
+### DDBot will no longer be available effective March 01 2018
+
+---
+
 Effective `August 06 2017`, DDBot development has ceased and will no longer receive updates* for the foreseeable future, barring any unexpected events. DDBot will be replaced by [Cast](https://github.com/CastProject/Cast) which aims to fix a lot of the issues encountered with DDBot and make an overall easier to use API for plugin developers.
 
 > Even though DDBot has been deprecated, **you are still welcome to use it.** It is in a great state and is *mostly* production ready.
